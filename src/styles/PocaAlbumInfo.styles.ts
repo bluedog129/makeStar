@@ -11,7 +11,7 @@ export const InfoContainer = styled.div`
 export const Title = styled.h2`
   font-size: 20px;
   font-weight: bold;
-  margin: 0 0 12px 0;
+  margin: 0 0 8px 0;
   color: #333;
   text-align: center;
 `;
@@ -19,7 +19,7 @@ export const Title = styled.h2`
 export const Artist = styled.p`
   font-size: 16px;
   color: #666;
-  margin: 0 0 8px 0;
+  margin: 0 0 12px 0;
   text-align: center;
 `;
 
