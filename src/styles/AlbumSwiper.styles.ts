@@ -29,11 +29,11 @@ export const StyledSwiperContainer = styled.div`
 export const AlbumCard = styled.div`
   width: 100%;
   max-width: 280px;
-  border-radius: 10px;
+  border-radius: 8px;
   overflow: visible; // 중요: 효과가 밖으로 나가도록 변경
   position: relative;
   background-color: white;
-              
+
   /* 앨범 이미지 양쪽에 그라데이션 효과 추가 */
   &::before, &::after {
     content: '';
@@ -59,16 +59,19 @@ export const AlbumCard = styled.div`
 `;
 
 export const AlbumImage = styled.div`
+  border-radius: 10px;
   width: 100%;
   height: 280px;
   display: block;
   position: relative;
+  overflow: hidden;
 
   img {
     width: 100%;
     height: 100%;
     display: block;
     object-fit: contain;
+    border-radius: 10px;
   }
   
   /* 이미지 주변에 살짝 흐릿한 글로우 효과 */
@@ -81,6 +84,7 @@ export const AlbumImage = styled.div`
     bottom: 0;
     box-shadow: 0 0 30px 5px rgba(200, 220, 255, 0.5) inset;
     pointer-events: none;
+    border-radius: 8px;
   }
 `;
 
