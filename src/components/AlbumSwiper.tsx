@@ -1,4 +1,3 @@
-import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Swiper as SwiperType } from 'swiper';
 import styled from 'styled-components';
@@ -100,6 +99,7 @@ const albumData: Album[] = [
     count: 1,
     published_album_list: [],
     artist: {
+      id: 1,
       name: 'NewJeans',
     },
     released_at: '2024.03.01',
@@ -113,6 +113,7 @@ const albumData: Album[] = [
     count: 1,
     published_album_list: [],
     artist: {
+      id: 2,
       name: 'Aespa',
     },
     released_at: '2024.03.01',
@@ -126,6 +127,7 @@ const albumData: Album[] = [
     count: 1,
     published_album_list: [],
     artist: {
+      id: 3,
       name: 'IVE',
     },
     released_at: '2024.03.01',
@@ -139,6 +141,7 @@ const albumData: Album[] = [
     count: 1,
     published_album_list: [],
     artist: {
+      id: 4,
       name: 'LE SSERAFIM',
     },
     released_at: '2024.03.01',
@@ -152,6 +155,7 @@ const albumData: Album[] = [
     count: 1,
     published_album_list: [],
     artist: {
+      id: 5,
       name: 'Seventeen',
     },
     released_at: '2024.03.01',
