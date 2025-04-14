@@ -18,7 +18,7 @@ import lesserafim from "../assets/images/lesserafim.png";
 import seventeen from "../assets/images/seventeen.png";
 
 // Fallback images mapping
-const fallbackImages = {
+const fallbackImages: { [key: string]: string } = {
   NewJeans: newjeans,
   aespa: aespa,
   IVE: ive,

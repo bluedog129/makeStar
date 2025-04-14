@@ -21,7 +21,7 @@ export interface Album {
   released_at: string;
   artist?: Artist;
   published_album_list: PublishedAlbum[];
-  coverImage?: string | { default: string }; // Import된 이미지 타입 지원
+  coverImage?: string | { default: string };
   isUpdate?: boolean;
 }
 
@@ -29,6 +29,6 @@ export interface AlbumListResponse {
   result: boolean;
   message: string;
   code: string;
-  external_data: any;
+  external_data: Record<string, unknown>;
   album_list: Album[];
 }
