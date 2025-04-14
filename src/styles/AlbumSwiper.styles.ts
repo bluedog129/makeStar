@@ -30,7 +30,7 @@ export const AlbumCard = styled.div`
   width: 100%;
   max-width: 280px;
   border-radius: 8px;
-  overflow: visible; // 중요: 효과가 밖으로 나가도록 변경
+  overflow: visible;
   position: relative;
   background-color: white;
 
@@ -40,26 +40,26 @@ export const AlbumCard = styled.div`
     position: absolute;
     top: 5%;
     height: 90%;
-    width: 20px;
+    width: 30px;
     z-index: -1;
-    filter: blur(10px);
+    filter: blur(15px);
   }
   
   /* 왼쪽 그라데이션 */
   &::before {
-    left: -15px;
+    left: -20px;
     background: linear-gradient(to right, transparent, rgba(178, 223, 255, 0.7));
   }
   
   /* 오른쪽 그라데이션 */
   &::after {
-    right: -15px;
+    right: -20px;
     background: linear-gradient(to left, transparent, rgba(255, 200, 240, 0.7));
   }
 `;
 
 export const AlbumImage = styled.div`
-  border-radius: 10px;
+  border-radius: 8px;
   width: 100%;
   height: 280px;
   display: block;
@@ -71,19 +71,6 @@ export const AlbumImage = styled.div`
     height: 100%;
     display: block;
     object-fit: contain;
-    border-radius: 10px;
-  }
-  
-  /* 이미지 주변에 살짝 흐릿한 글로우 효과 */
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    box-shadow: 0 0 30px 5px rgba(200, 220, 255, 0.5) inset;
-    pointer-events: none;
     border-radius: 8px;
   }
 `;
