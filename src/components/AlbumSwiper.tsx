@@ -195,7 +195,7 @@ const AlbumSwiper = ({
           <SwiperSlide key={album.id}>
             <AlbumCard>
               <AlbumImage>
-                <img src={album.coverImage} alt={album.title} />
+                <img src={typeof album.coverImage === 'object' ? album.coverImage.default : album.coverImage} alt={album.title} />
               </AlbumImage>
               {album.isUpdate && <UpdateBadge>UPDATE</UpdateBadge>}
             </AlbumCard>
