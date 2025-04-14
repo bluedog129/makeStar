@@ -16,6 +16,7 @@ export const AppContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0;
+  gap: 45px;
 
   @media ${({ theme }) => theme.mediaQueries.mobile} {
     padding: 0;
