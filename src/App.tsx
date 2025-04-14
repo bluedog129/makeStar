@@ -1,16 +1,19 @@
 import React from 'react';
-import { AppWrapper, AppContainer } from './styles/App.styles';
-import Header from './components/Header';
-import PocaAlbumContainer from './components/PocaAlbumContainer';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AppWrapper } from './styles/App.styles';
+import AlbumManagement from './pages/AlbumManagement';
+import MainPage from './pages/MainPage';
 
 function App() {
   return (
-    <AppWrapper>
-      <AppContainer>
-        <Header />
-        <PocaAlbumContainer />
-      </AppContainer>
-    </AppWrapper>
+    <Router>
+      <AppWrapper>
+        <Routes>
+          <Route path="/" element={<MainPage />} />
+          <Route path="/management" element={<AlbumManagement />} />
+        </Routes>
+      </AppWrapper>
+    </Router>
   );
 }
 

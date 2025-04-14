@@ -19,6 +19,6 @@ export const AppContainer = styled.div`
   gap: 45px;
 
   @media ${({ theme }) => theme.mediaQueries.mobile} {
-    padding: 0;
+    max-width: 100%;
   }
 `;
