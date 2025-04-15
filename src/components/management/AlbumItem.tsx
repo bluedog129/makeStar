@@ -4,6 +4,7 @@ import { Album } from "../../types/album";
 import { formatDate } from "../../utils/date";
 import smkebabIcon from "../../assets/images/smKebab.png";
 import SelectForm from "./SelectForm";
+import { getDownloadInfo } from "../../api/album";
 
 const AlbumItemContainer = styled.div`
   width: 100%;
@@ -81,9 +82,21 @@ interface AlbumItemProps {
 const AlbumItem = ({ album }: AlbumItemProps) => {
   const [isSelectOpen, setIsSelectOpen] = useState(false);
 
-  const handleDownload = () => {
-    // 여기서 testGetDownloadInfo 함수를 호출할 수 있습니다
-    console.log("Download album:", album.id);
+  const handleDownload = async () => {
+    try {
+      const downloadInfo = await getDownloadInfo(album.id);
+      
+      // 로컬 스토리지에 다운로드 정보 저장
+      const storageKey = `album_download_${album.id}`;
+      localStorage.setItem(storageKey, JSON.stringify({
+        ...downloadInfo,
+        savedAt: new Date().toISOString(),
+      }));
+
+      console.log('Download info saved for album:', album.id);
+    } catch (error) {
+      console.error('Error handling download:', error);
+    }
   };
 
   const handleDelete = () => {

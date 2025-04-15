@@ -1,6 +1,12 @@
 import { API_HEADERS, getEndpoint } from './config';
 import { AlbumListResponse } from '../types/album';
 
+interface DownloadInfo {
+  // API 응답 타입 정의
+  album_id: number;
+  // 다른 필요한 필드들도 여기에 추가
+}
+
 export const getOwnAlbumList = async (): Promise<AlbumListResponse> => {
   const url = getEndpoint('/get_own_album_list_info/');
   console.log('Requesting URL:', url);
@@ -32,6 +38,31 @@ export const getOwnAlbumList = async (): Promise<AlbumListResponse> => {
     return data;
   } catch (error) {
     console.error('Error fetching album list:', error);
+    throw error;
+  }
+};
+
+export const getDownloadInfo = async (albumId: number): Promise<DownloadInfo> => {
+  try {
+    const response = await fetch(import.meta.env.VITE_GET_DOWNLOAD_INFO_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': import.meta.env.VITE_API_AUTH_TOKEN,
+      },
+      body: JSON.stringify({
+        album_id: albumId
+      })
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to fetch download info');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching download info:', error);
     throw error;
   }
 };

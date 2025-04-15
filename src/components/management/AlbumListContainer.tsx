@@ -61,26 +61,6 @@ const AlbumListContainer = () => {
   const [isSortSheetOpen, setIsSortSheetOpen] = useState(false);
   const [sortType, setSortType] = useState<'latest' | 'name'>('latest');
 
-  const testGetDownloadInfo = async (albumId: number) => {
-    try {
-      const response = await fetch(import.meta.env.VITE_GET_DOWNLOAD_INFO_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': import.meta.env.VITE_API_AUTH_TOKEN,
-        },
-        body: JSON.stringify({
-          album_id: albumId
-        })
-      });
-      
-      const data = await response.json();
-      console.log('Download info for album', albumId, ':', data);
-    } catch (error) {
-      console.error('Error fetching download info:', error);
-    }
-  };
-
   const sortedAlbums = useMemo(() => {
     const albumsCopy = [...albums];
     
