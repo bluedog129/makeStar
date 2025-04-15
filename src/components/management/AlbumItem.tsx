@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Album } from '../../types/album';
 import { formatDate } from '../../utils/date';
-import smkebabIcon from '../../assets/images/smkebab.png';
+import smkebabIcon from '../../assets/images/smKebab.png';
+import SelectForm from './SelectForm';
 
 const AlbumItemContainer = styled.div`
   width: 100%;
@@ -39,12 +40,16 @@ const Title = styled.span`
 `;
 
 const MenuButton = styled.button`
-  width: 20px;
-  height: 20px;
   border: none;
   background: none;
   padding: 0;
   cursor: pointer;
+  position: relative;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const MenuIcon = styled.img`
@@ -74,6 +79,17 @@ interface AlbumItemProps {
 }
 
 const AlbumItem = ({ album }: AlbumItemProps) => {
+  const [isSelectOpen, setIsSelectOpen] = useState(false);
+
+  const handleDownload = () => {
+    // 여기서 testGetDownloadInfo 함수를 호출할 수 있습니다
+    console.log('Download album:', album.id);
+  };
+
+  const handleDelete = () => {
+    console.log('Delete album:', album.id);
+  };
+
   const publishedCount = album.published_album_list?.length || 0;
   const coverImage = album.published_album_list?.[0]?.box_image_url || album.coverImage;
 
@@ -83,7 +99,7 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
       <AlbumInfo>
         <TitleContainer>
           <Title>{album.title}</Title>
-          <MenuButton>
+          <MenuButton onClick={() => setIsSelectOpen(true)}>
             <MenuIcon src={smkebabIcon} alt="메뉴" />
           </MenuButton>
         </TitleContainer>
@@ -94,6 +110,12 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
         </SubInfo>
         <Count>수량 {publishedCount}</Count>
       </AlbumInfo>
+      <SelectForm
+        isOpen={isSelectOpen}
+        onClose={() => setIsSelectOpen(false)}
+        onDownload={handleDownload}
+        onDelete={handleDelete}
+      />
     </AlbumItemContainer>
   );
 };
