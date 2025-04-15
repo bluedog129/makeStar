@@ -1,8 +1,6 @@
 import { API_HEADERS, getEndpoint } from './config';
 import { AlbumListResponse } from '../types/album';
 
-//https://dev-api.pocaalbum.com/apis/v1/pocaalbum/get_own_album_list_info/
-
 export const getOwnAlbumList = async (): Promise<AlbumListResponse> => {
   const url = getEndpoint('/get_own_album_list_info/');
   console.log('Requesting URL:', url);
