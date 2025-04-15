@@ -185,7 +185,10 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
       <AlbumInfo>
         <TitleContainer>
           <Title>{album.title}</Title>
-          <MenuButton onClick={() => setIsSelectOpen(true)}>
+          <MenuButton onClick={(e) => {
+            e.stopPropagation();
+            setIsSelectOpen(true);
+          }}>
             <MenuIcon src={smkebabIcon} alt="메뉴" />
             <SelectForm
               isOpen={isSelectOpen}

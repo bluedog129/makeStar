@@ -70,20 +70,21 @@ const SelectForm = ({
     };
   }, [isOpen, onClose]);
 
-  const handleItemClick = (callback: () => void) => {
-    callback();
+  const handleItemClick = (callback: () => void) => (e: React.MouseEvent) => {
+    e.stopPropagation();
     onClose();
+    callback();
   };
 
   if (!isOpen) return null;
 
   return (
     <SelectContainer ref={containerRef} isOpen={isOpen}>
-      <SelectItem onClick={() => handleItemClick(onDownload)}>
+      <SelectItem onClick={handleItemClick(onDownload)}>
         앨범 다운로드
       </SelectItem>
       <SelectItem 
-        onClick={() => handleItemClick(onDelete)}
+        onClick={handleItemClick(onDelete)}
         style={{ color: '#FF0000' }}
       >
         앨범 삭제
