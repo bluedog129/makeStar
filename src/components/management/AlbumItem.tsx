@@ -18,35 +18,72 @@ const AlbumItemContainer = styled.div`
   margin-bottom: 16px;
 `;
 
-const AlbumImage = styled.div`
+const Title = styled.span`
+  font-size: 14px;
+  color: #000000;
+`;
+
+const SubInfo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: #6c6c6c;
+`;
+
+const Count = styled.span`
+  font-size: 11px;
+  color: #a5a5a5;
+`;
+
+interface AlbumImageProps {
+  $isInactive: boolean;
+}
+
+interface AlbumInfoProps {
+  $isInactive: boolean;
+}
+
+const AlbumImage = styled.div<AlbumImageProps>`
   width: 54px;
   height: 85px;
   overflow: hidden;
   border-radius: 4px;
+  position: relative;
 
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: ${props => props.$isInactive ? 'rgba(0, 0, 0, 0.7)' : 'transparent'};
+  }
 `;
 
-const AlbumInfo = styled.div`
+const AlbumInfo = styled.div<AlbumInfoProps>`
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 4px;
+  color: ${props => props.$isInactive ? '#A5A5A5' : 'inherit'};
+
+  ${Title}, ${SubInfo}, ${Count} {
+    color: ${props => props.$isInactive ? '#A5A5A5' : 'inherit'};
+  }
 `;
 
 const TitleContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`;
-
-const Title = styled.span`
-  font-size: 14px;
-  color: #000000;
 `;
 
 const MenuButton = styled.button`
@@ -67,21 +104,8 @@ const MenuIcon = styled.img`
   height: 20px;
 `;
 
-const SubInfo = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 12px;
-  color: #6c6c6c;
-`;
-
 const Dot = styled.span`
   color: #6c6c6c;
-`;
-
-const Count = styled.span`
-  font-size: 11px;
-  color: #a5a5a5;
 `;
 
 const WaitingContainer = styled.div`
@@ -139,7 +163,7 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
   const { 
     addToDownloadQueue, 
     removeFromDownloadQueue, 
-    isDownloading, 
+    isDownloading,
     isInQueue,
     startNextDownload,
     getQueuePosition 
@@ -258,16 +282,21 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
     console.log("앨범 삭제:", album.id);
   };
 
+  const isInLocalStorage = () => {
+    const storageKey = `${album.title}_${album.id}`;
+    return localStorage.getItem(storageKey) !== null;
+  };
+
   const coverImage =
     album.published_album_list?.[0]?.box_image_url || album.coverImage;
   const publishedCount = album.published_album_list?.length || 0;
 
   return (
     <AlbumItemContainer>
-      <AlbumImage>
+      <AlbumImage $isInactive={!isInLocalStorage()}>
         <img src={coverImage} alt={album.title} />
       </AlbumImage>
-      <AlbumInfo>
+      <AlbumInfo $isInactive={!isInLocalStorage()}>
         <TitleContainer>
           <Title>{album.title}</Title>
           <MenuButton
