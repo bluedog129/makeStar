@@ -1,8 +1,9 @@
-import React from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import useAlbumStore from '../../store/albumStore';
 import sortingIcon from '../../assets/images/sorting.png';
 import AlbumItem from './AlbumItem';
+import SortBottomSheet from './SortBottomSheet';
 
 const Container = styled.div`
   width: 100%;
@@ -57,6 +58,7 @@ const SortText = styled.span`
 
 const AlbumListContainer = () => {
   const { albums } = useAlbumStore();
+  const [isSortSheetOpen, setIsSortSheetOpen] = useState(false);
 
   // published_album_list의 총 개수 계산
   const totalPublishedCount = albums.reduce((sum, album) => {
@@ -70,7 +72,7 @@ const AlbumListContainer = () => {
           <TotalCount>전체 {albums.length}</TotalCount>
           <PublishedCount>(수량 {totalPublishedCount})</PublishedCount>
         </CountContainer>
-        <SortButton>
+        <SortButton onClick={() => setIsSortSheetOpen(true)}>
           <SortIcon src={sortingIcon} alt="정렬" />
           <SortText>순서변경</SortText>
         </SortButton>
@@ -78,6 +80,10 @@ const AlbumListContainer = () => {
       {albums.map((album) => (
         <AlbumItem key={album.id} album={album} />
       ))}
+      <SortBottomSheet 
+        isOpen={isSortSheetOpen}
+        onClose={() => setIsSortSheetOpen(false)}
+      />
     </Container>
   );
 };
