@@ -128,7 +128,7 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
       const downloadInfo = await getDownloadInfo(album.id);
 
       // 로컬 스토리지에 다운로드 정보 저장
-      const storageKey = album.title;
+      const storageKey = `${album.title}_${album.id}`;
       localStorage.setItem(
         storageKey,
         JSON.stringify({
@@ -170,6 +170,9 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
   };
 
   const handleDelete = () => {
+    // 로컬 스토리지에서 해당 앨범 데이터 삭제
+    const storageKey = `${album.title}_${album.id}`;
+    localStorage.removeItem(storageKey);
     console.log("Delete album:", album.id);
   };
 
