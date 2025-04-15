@@ -53,8 +53,8 @@ const CloseButton = styled.button`
 `;
 
 const CloseIcon = styled.img`
-  width: 20px;
-  height: 20px;
+  width: 12px;
+  height: 12px;
 `;
 
 interface DownloadProgressProps {
