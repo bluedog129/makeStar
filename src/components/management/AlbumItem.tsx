@@ -128,7 +128,7 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
       const downloadInfo = await getDownloadInfo(album.id);
 
       // 로컬 스토리지에 다운로드 정보 저장
-      const storageKey = `album_download_${album.id}`;
+      const storageKey = album.title;
       localStorage.setItem(
         storageKey,
         JSON.stringify({
