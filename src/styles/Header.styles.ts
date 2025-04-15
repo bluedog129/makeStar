@@ -24,4 +24,5 @@ export const AlbumManageButton = styled.div`
   border-radius: 15px;
   background-color: ${({ theme }) => theme.colors.albumManage.background};
   border: 1px solid ${({ theme }) => theme.colors.albumManage.border};
+  cursor: pointer;
 `;
