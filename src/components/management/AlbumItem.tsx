@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { Album } from '../../types/album';
-import { formatDate } from '../../utils/date';
-import smkebabIcon from '../../assets/images/smKebab.png';
-import SelectForm from './SelectForm';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { Album } from "../../types/album";
+import { formatDate } from "../../utils/date";
+import smkebabIcon from "../../assets/images/smKebab.png";
+import SelectForm from "./SelectForm";
 
 const AlbumItemContainer = styled.div`
   width: 100%;
@@ -62,16 +62,16 @@ const SubInfo = styled.div`
   align-items: center;
   gap: 4px;
   font-size: 12px;
-  color: #6C6C6C;
+  color: #6c6c6c;
 `;
 
 const Dot = styled.span`
-  color: #6C6C6C;
+  color: #6c6c6c;
 `;
 
 const Count = styled.span`
   font-size: 11px;
-  color: #A5A5A5;
+  color: #a5a5a5;
 `;
 
 interface AlbumItemProps {
@@ -83,15 +83,16 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
 
   const handleDownload = () => {
     // 여기서 testGetDownloadInfo 함수를 호출할 수 있습니다
-    console.log('Download album:', album.id);
+    console.log("Download album:", album.id);
   };
 
   const handleDelete = () => {
-    console.log('Delete album:', album.id);
+    console.log("Delete album:", album.id);
   };
 
   const publishedCount = album.published_album_list?.length || 0;
-  const coverImage = album.published_album_list?.[0]?.box_image_url || album.coverImage;
+  const coverImage =
+    album.published_album_list?.[0]?.box_image_url || album.coverImage;
 
   return (
     <AlbumItemContainer>
@@ -101,6 +102,12 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
           <Title>{album.title}</Title>
           <MenuButton onClick={() => setIsSelectOpen(true)}>
             <MenuIcon src={smkebabIcon} alt="메뉴" />
+            <SelectForm
+              isOpen={isSelectOpen}
+              onClose={() => setIsSelectOpen(false)}
+              onDownload={handleDownload}
+              onDelete={handleDelete}
+            />
           </MenuButton>
         </TitleContainer>
         <SubInfo>
@@ -110,14 +117,8 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
         </SubInfo>
         <Count>수량 {publishedCount}</Count>
       </AlbumInfo>
-      <SelectForm
-        isOpen={isSelectOpen}
-        onClose={() => setIsSelectOpen(false)}
-        onDownload={handleDownload}
-        onDelete={handleDelete}
-      />
     </AlbumItemContainer>
   );
 };
 
-export default AlbumItem; 
+export default AlbumItem;
