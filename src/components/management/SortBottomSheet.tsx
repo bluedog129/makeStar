@@ -71,7 +71,7 @@ interface SortBottomSheetProps {
   onSort?: (sortType: SortType) => void;
 }
 
-const SortBottomSheet: React.FC<SortBottomSheetProps> = ({ isOpen, onClose, onSort }) => {
+const SortBottomSheet = ({ isOpen, onClose, onSort }: SortBottomSheetProps) => {
   const [selectedSort, setSelectedSort] = useState<SortType>('latest');
 
   const handleSortSelect = (sortType: SortType) => {
