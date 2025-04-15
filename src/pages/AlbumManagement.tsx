@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import Topbar from '../components/management/Topbar';
 import AlbumListContainer from '../components/management/AlbumListContainer';
