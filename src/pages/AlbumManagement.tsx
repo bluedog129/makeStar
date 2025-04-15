@@ -17,11 +17,18 @@ const ContentContainer = styled.div`
   background-color: white;
 `;
 
+const Divider = styled.div`
+  width: 100%;
+  height: 8px;
+  background-color: #F5F5F5;
+`;
+
 const AlbumManagement = () => {
   return (
     <ManagementContainer>
       <ContentContainer>
         <Topbar />
+        <Divider />
         <AlbumListContainer />
       </ContentContainer>
     </ManagementContainer>

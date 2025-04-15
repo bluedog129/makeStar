@@ -24,8 +24,8 @@ const CloseButton = styled.button`
   background: none;
   padding: 0;
   cursor: pointer;
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
   background-image: url(${closeIcon});
   background-size: contain;
   background-repeat: no-repeat;
