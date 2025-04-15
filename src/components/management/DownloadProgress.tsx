@@ -36,6 +36,7 @@ const Spinner = styled.div`
 
 const ProgressText = styled.span`
   font-size: 11px;
+  font-weight: bold;
   color: #6C6C6C;
 `;
 
