@@ -23,17 +23,21 @@ const Title = styled.span`
   color: #000000;
 `;
 
-const SubInfo = styled.div`
+interface StyledProps {
+  $isInactive: boolean;
+}
+
+const SubInfo = styled.div<StyledProps>`
   display: flex;
   align-items: center;
   gap: 4px;
   font-size: 12px;
-  color: #6c6c6c;
+  color: ${props => props.$isInactive ? '#A5A5A5' : '#6c6c6c'};
 `;
 
-const Count = styled.span`
+const Count = styled.span<StyledProps>`
   font-size: 11px;
-  color: #a5a5a5;
+  color: ${props => props.$isInactive ? '#A5A5A5' : '#a5a5a5'};
 `;
 
 interface AlbumImageProps {
@@ -73,10 +77,9 @@ const AlbumInfo = styled.div<AlbumInfoProps>`
   display: flex;
   flex-direction: column;
   gap: 4px;
-  color: ${props => props.$isInactive ? '#A5A5A5' : 'inherit'};
-
-  ${Title}, ${SubInfo}, ${Count} {
-    color: ${props => props.$isInactive ? '#A5A5A5' : 'inherit'};
+  
+  ${Title} {
+    color: ${props => props.$isInactive ? '#A5A5A5' : '#000000'};
   }
 `;
 
@@ -166,9 +169,7 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
     addToDownloadQueue, 
     removeFromDownloadQueue, 
     isDownloading,
-    isInQueue,
-    startNextDownload,
-    getQueuePosition 
+    isInQueue
   } = useAlbumStore();
 
   const isCancelledRef = useRef(false);
@@ -212,7 +213,9 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
         setDownloadState((prev) => {
           const nextProgress = prev.current + 1;
           if (nextProgress >= 60) {
-            clearInterval(progressIntervalRef.current);
+            if (progressIntervalRef.current) {
+              clearInterval(progressIntervalRef.current);
+            }
           }
           return {
             ...prev,
@@ -235,7 +238,9 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
         setDownloadState((prev) => {
           const nextProgress = prev.current + 2;
           if (nextProgress >= 100) {
-            clearInterval(progressIntervalRef.current);
+            if (progressIntervalRef.current) {
+              clearInterval(progressIntervalRef.current);
+            }
             return {
               ...prev,
               current: 100,
@@ -354,12 +359,12 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
           </WaitingContainer>
         ) : (
           <>
-            <SubInfo>
+            <SubInfo $isInactive={!isInLocalStorage()}>
               <span>{album.artist?.name}</span>
               <Dot>•</Dot>
               <span>{formatDate(album.released_at)}</span>
             </SubInfo>
-            <Count>수량 {publishedCount}</Count>
+            <Count $isInactive={!isInLocalStorage()}>타입 {album.version_code} · 수량 {publishedCount}</Count>
           </>
         )}
       </AlbumInfo>

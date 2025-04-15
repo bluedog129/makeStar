@@ -102,8 +102,12 @@ const AlbumListContainer = () => {
     <Container>
       <SummaryContainer>
         <CountContainer>
-          <TotalCount>전체 {albums.length}</TotalCount>
-          <PublishedCount>(수량 {totalPublishedCount})</PublishedCount>
+          <TotalCount>
+            전체 {albums.length} 
+          </TotalCount>
+          <PublishedCount>
+            (타입 {albums.reduce((sum, album) => sum + album.version_code, 0)} · 수량 {totalPublishedCount})
+          </PublishedCount>
         </CountContainer>
         <SortButton 
           onClick={() => {
