@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { Album } from "../../types/album";
 import { formatDate } from "../../utils/date";
@@ -6,6 +6,7 @@ import smkebabIcon from "../../assets/images/smKebab.png";
 import SelectForm from "./SelectForm";
 import { getDownloadInfo } from "../../api/album";
 import DownloadProgress from "./DownloadProgress";
+import useAlbumStore from "../../store/albumStore";
 
 const AlbumItemContainer = styled.div`
   width: 100%;
@@ -83,6 +84,40 @@ const Count = styled.span`
   color: #a5a5a5;
 `;
 
+const WaitingContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;
+
+const Spinner = styled.div`
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-bottom-color: #FF0099;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+`;
+
+const WaitingText = styled.span`
+  font-size: 11px;
+  font-weight: bold;
+  color: #6C6C6C;
+  display: flex;
+  align-items: center;
+`;
+
 interface AlbumItemProps {
   album: Album;
 }
@@ -101,17 +136,32 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
     total: 0,
   });
 
-  // 취소 플래그와 인터벌 참조를 useRef로 생성
+  const { 
+    addToDownloadQueue, 
+    removeFromDownloadQueue, 
+    isDownloading, 
+    isInQueue,
+    startNextDownload,
+    getQueuePosition 
+  } = useAlbumStore();
+
   const isCancelledRef = useRef(false);
   const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  const handleDownload = async () => {
+  useEffect(() => {
+    // 이 앨범이 다운로드 중이면 다운로드 시작
+    if (isDownloading(album.id)) {
+      startDownload();
+    }
+  }, [isDownloading(album.id)]);
+
+  const startDownload = async () => {
     // 새로운 다운로드 시작 시 취소 플래그 초기화
     isCancelledRef.current = false;
     setDownloadState({
       isDownloading: true,
       current: 0,
-      total: 100, // 시뮬레이션 용 값이며 실제 값으로 수정 가능
+      total: 100,
     });
 
     // 진행률 업데이트 함수
@@ -136,38 +186,35 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
     try {
       const downloadInfo = await getDownloadInfo(album.id);
 
-      // API 호출 후 취소 여부 확인
       if (isCancelledRef.current) {
         console.log("다운로드가 취소되어 로컬 저장을 생략합니다.");
         return;
       }
 
-      // 로컬 스토리지에 앨범 정보 저장
       const storageKey = `${album.title}_${album.id}`;
       localStorage.setItem(storageKey, JSON.stringify(album));
 
-      // 진행률 인터벌 종료
       if (progressIntervalRef.current) {
         clearInterval(progressIntervalRef.current);
       }
       
-      // 진행률을 최대로 설정
       setDownloadState((prev) => ({
         ...prev,
         current: prev.total,
       }));
 
-      // 다운로드 완료 후 약간의 지연 후 상태 초기화
+      // 다운로드 완료 후 상태 초기화
       setTimeout(() => {
         setDownloadState({
           isDownloading: false,
           current: 0,
           total: 0,
         });
+        // 현재 다운로드를 큐에서 제거하고 다음 다운로드 시작
+        removeFromDownloadQueue(album.id);
       }, 500);
     } catch (error) {
       console.error("다운로드 처리 중 오류 발생:", error);
-      // 에러 발생 시 인터벌 종료 후 상태 초기화
       if (progressIntervalRef.current) {
         clearInterval(progressIntervalRef.current);
       }
@@ -176,22 +223,32 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
         current: 0,
         total: 0,
       });
+      // 에러 발생 시 현재 다운로드를 큐에서 제거하고 다음 다운로드 시작
+      removeFromDownloadQueue(album.id);
     }
   };
 
+  const handleDownload = () => {
+    // 이미 다운로드 중이거나 대기 중이면 무시
+    if (isInQueue(album.id)) {
+      return;
+    }
+
+    // 다운로드 큐에 추가
+    addToDownloadQueue(album.id);
+  };
+
   const handleCancelDownload = () => {
-    // 취소 버튼 클릭 시 취소 플래그를 true로 설정
     isCancelledRef.current = true;
-    // 진행 중인 인터벌 종료
     if (progressIntervalRef.current) {
       clearInterval(progressIntervalRef.current);
     }
-    // 다운로드 상태 초기화
     setDownloadState({
       isDownloading: false,
       current: 0,
       total: 0,
     });
+    removeFromDownloadQueue(album.id);
   };
 
   const handleDelete = () => {
@@ -234,6 +291,11 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
             total={downloadState.total}
             onCancel={handleCancelDownload}
           />
+        ) : isInQueue(album.id) && !isDownloading(album.id) ? (
+          <WaitingContainer>
+            <Spinner />
+            <WaitingText>대기중</WaitingText>
+          </WaitingContainer>
         ) : (
           <>
             <SubInfo>
