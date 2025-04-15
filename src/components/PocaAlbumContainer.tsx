@@ -3,6 +3,7 @@ import { getOwnAlbumList } from "../api/album";
 import { AlbumListResponse } from "../types/album";
 import PocaAlbumInfo from "./PocaAlbumInfo";
 import AlbumSwiper from "./AlbumSwiper";
+import useAlbumStore from "../store/albumStore";
 import {
   Container,
   LoadingText,
@@ -24,7 +25,6 @@ const fallbackImages: { [key: string]: string } = {
   IVE: ive,
   "LE SSERAFIM": lesserafim,
   SEVENTEEN: seventeen,
-  // Add a default fallback
   default: newjeans,
 };
 
@@ -32,6 +32,7 @@ const PocaAlbumContainer = () => {
   const [albumData, setAlbumData] = useState<AlbumListResponse | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const { setAlbums } = useAlbumStore();
 
   useEffect(() => {
     const fetchAlbumData = async () => {
@@ -39,71 +40,66 @@ const PocaAlbumContainer = () => {
         setLoading(true);
         const data = await getOwnAlbumList();
 
-        // Process the API data to add coverImage property
         if (data && data.result && data.album_list) {
           const processedAlbums = data.album_list.map((album) => {
-            // Try to get image from published_album_list first
             let coverImage = null;
 
             if (
               album.published_album_list &&
               album.published_album_list.length > 0
             ) {
-              // Use box_image_url or nfc_image_url if available
               coverImage =
                 album.published_album_list[0].box_image_url ||
                 album.published_album_list[0].nfc_image_url;
             }
 
-            // If no image was found, use fallback based on artist name
             if (!coverImage) {
               const artistName = album.artist?.name || "";
               coverImage = fallbackImages[artistName] || fallbackImages.default;
             }
 
-            // Add isUpdate property (you may want to base this on some logic)
-            const isUpdate = album.version_code > 1;
-
-            return {
+            const processedAlbum = {
               ...album,
               coverImage,
-              isUpdate,
+              isUpdate: album.version_code > 1
             };
+
+            return processedAlbum;
           });
 
-          // Update the data with processed albums
-          data.album_list = processedAlbums;
+          // API 데이터만 store에 저장
+          setAlbums(processedAlbums);
+          setAlbumData({
+            ...data,
+            album_list: processedAlbums
+          });
         }
-
-        setAlbumData(data);
       } catch (err) {
         console.error("API 호출 실패, 더미 데이터를 사용합니다:", err);
 
-        // Process mock data similarly
-        const processedMockData = {
+        const processedMockData = mockAlbumData.album_list.map((album) => {
+          const artistName = album.artist?.name || "";
+          const coverImage = fallbackImages[artistName] || fallbackImages.default;
+          
+          return {
+            ...album,
+            coverImage,
+            isUpdate: album.version_code > 1
+          };
+        });
+
+        // 더미 데이터는 로컬 상태에만 저장
+        setAlbumData({
           ...mockAlbumData,
-          album_list: mockAlbumData.album_list.map((album) => {
-            const artistName = album.artist?.name || "";
-            const coverImage =
-              fallbackImages[artistName] || fallbackImages.default;
-            const isUpdate = album.version_code > 1;
-
-            return {
-              ...album,
-              coverImage,
-              isUpdate,
-            };
-          }),
-        };
-
-        setAlbumData(processedMockData);
+          album_list: processedMockData
+        });
       } finally {
         setLoading(false);
       }
     };
 
     fetchAlbumData();
-  }, []);
+  }, []); // 의존성 배열에서 albums.length 제거
 
   if (loading) {
     return <LoadingText>로딩 중...</LoadingText>;
@@ -113,16 +109,11 @@ const PocaAlbumContainer = () => {
     return <ErrorText>앨범 정보가 없습니다.</ErrorText>;
   }
 
-  const albums = albumData.album_list;
-  if (albums.length === 0) {
-    return <ErrorText>앨범 정보가 없습니다.</ErrorText>;
-  }
-
-  const currentAlbum = albums[currentIndex];
+  const currentAlbum = albumData.album_list[currentIndex];
 
   return (
     <Container>
-      <AlbumSwiper albums={albums} onSlideChange={setCurrentIndex} />
+      <AlbumSwiper albums={albumData.album_list} onSlideChange={setCurrentIndex} />
       <PocaAlbumInfo
         title={currentAlbum.title}
         artist={currentAlbum.artist?.name || ""}

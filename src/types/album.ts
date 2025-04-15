@@ -4,31 +4,31 @@ export interface Artist {
 }
 
 export interface PublishedAlbum {
-  id: number;
   album_type: number;
+  box_image_url: string;
+  id: number;
+  nfc_image_id: number;
+  nfc_image_index: number;
+  nfc_image_url: string;
   uuid: string;
-  box_image_url?: string;
-  nfc_image_url?: string;
-  nfc_image_id?: number;
-  nfc_image_index?: number;
 }
 
 export interface Album {
   id: number;
+  artist: Artist;
+  count: number;
+  coverImage?: string;
+  isUpdate: boolean;
+  published_album_list: PublishedAlbum[];
+  released_at: string;
   title: string;
   version_code: number;
-  count: number;
-  released_at: string;
-  artist?: Artist;
-  published_album_list: PublishedAlbum[];
-  coverImage?: string | { default: string };
-  isUpdate?: boolean;
 }
 
 export interface AlbumListResponse {
   result: boolean;
   message: string;
   code: string;
-  external_data: Record<string, unknown>;
+  external_data: null;
   album_list: Album[];
 }
