@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import pinkCheckIcon from '../../assets/images/pinkCheck.png';
 
 const Overlay = styled.div<{ isOpen: boolean }>`
   position: fixed;
@@ -19,7 +20,7 @@ const Sheet = styled.div<{ isOpen: boolean }>`
   bottom: ${({ isOpen }) => (isOpen ? '0' : '-240px')};
   width: 100%;
   max-width: ${({ theme }) => theme.layout.maxWidth};
-  height: 240px;
+  height: 170px;
   background-color: white;
   border-radius: 12px 12px 0 0;
   transition: bottom 0.3s ease-in-out;
@@ -39,16 +40,66 @@ const Sheet = styled.div<{ isOpen: boolean }>`
   }
 `;
 
+const SortOption = styled.button<{ isSelected: boolean }>`
+  width: 100%;
+  height: 56px;
+  padding: 0px 8px 0px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: none;
+  background: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: ${({ isSelected }) => (isSelected ? '#FF0099' : '#000000')};
+  cursor: pointer;
+`;
+
+const CheckIcon = styled.img`
+  width: 12px;
+  height: 8px;
+`;
+
+const SortOptionsContainer = styled.div`
+`;
+
+type SortType = 'latest' | 'name';
+
 interface SortBottomSheetProps {
   isOpen: boolean;
   onClose: () => void;
+  onSort?: (sortType: SortType) => void;
 }
 
-const SortBottomSheet: React.FC<SortBottomSheetProps> = ({ isOpen, onClose }) => {
+const SortBottomSheet: React.FC<SortBottomSheetProps> = ({ isOpen, onClose, onSort }) => {
+  const [selectedSort, setSelectedSort] = useState<SortType>('latest');
+
+  const handleSortSelect = (sortType: SortType) => {
+    setSelectedSort(sortType);
+    onSort?.(sortType);
+  };
+
   return (
     <>
       <Overlay isOpen={isOpen} onClick={onClose} />
-      <Sheet isOpen={isOpen} />
+      <Sheet isOpen={isOpen}>
+        <SortOptionsContainer>
+          <SortOption
+            isSelected={selectedSort === 'latest'}
+            onClick={() => handleSortSelect('latest')}
+          >
+            최신 발매일순
+            {selectedSort === 'latest' && <CheckIcon src={pinkCheckIcon} alt="selected" />}
+          </SortOption>
+          <SortOption
+            isSelected={selectedSort === 'name'}
+            onClick={() => handleSortSelect('name')}
+          >
+            앨범 이름순
+            {selectedSort === 'name' && <CheckIcon src={pinkCheckIcon} alt="selected" />}
+          </SortOption>
+        </SortOptionsContainer>
+      </Sheet>
     </>
   );
 };
