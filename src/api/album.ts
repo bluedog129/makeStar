@@ -4,6 +4,7 @@ import { AlbumListResponse } from '../types/album';
 interface DownloadInfo {
   // API 응답 타입 정의
   album_id: number;
+  headers: Headers;
   // 다른 필요한 필드들도 여기에 추가
 }
 
@@ -60,7 +61,10 @@ export const getDownloadInfo = async (albumId: number): Promise<DownloadInfo> =>
     }
 
     const data = await response.json();
-    return data;
+    return {
+      ...data,
+      headers: response.headers
+    };
   } catch (error) {
     console.error('Error fetching download info:', error);
     throw error;

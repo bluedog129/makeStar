@@ -150,6 +150,7 @@ interface DownloadState {
   isDownloading: boolean;
   current: number;
   total: number;
+  totalSize?: number; // MB 단위의 파일 크기
 }
 
 const AlbumItem = ({ album }: AlbumItemProps) => {
@@ -158,6 +159,7 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
     isDownloading: false,
     current: 0,
     total: 0,
+    totalSize: undefined
   });
 
   const { 
@@ -186,57 +188,79 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
       isDownloading: true,
       current: 0,
       total: 100,
+      totalSize: undefined
     });
-
-    // 진행률 업데이트 함수
-    const simulateProgress = () => {
-      setDownloadState((prev) => {
-        if (prev.current >= prev.total) {
-          if (progressIntervalRef.current) {
-            clearInterval(progressIntervalRef.current);
-          }
-          return prev;
-        }
-        return {
-          ...prev,
-          current: prev.current + 1,
-        };
-      });
-    };
-
-    // 진행률 업데이트를 위해 50ms마다 실행되는 인터벌 시작
-    progressIntervalRef.current = setInterval(simulateProgress, 50);
 
     try {
       const downloadInfo = await getDownloadInfo(album.id);
+      const contentLength = downloadInfo.headers.get('Content-Length');
+      const totalSizeMB = contentLength ? Number((parseInt(contentLength) / 1024 / 1024).toFixed(2)) : undefined;
 
       if (isCancelledRef.current) {
         console.log("다운로드가 취소되어 로컬 저장을 생략합니다.");
         return;
       }
 
+      setDownloadState(prev => ({
+        ...prev,
+        totalSize: totalSizeMB,
+        current: 30 // API 응답 받은 후 30%로 설정
+      }));
+
+      // 진행률을 30%에서 60%까지 서서히 증가
+      progressIntervalRef.current = setInterval(() => {
+        setDownloadState((prev) => {
+          const nextProgress = prev.current + 1;
+          if (nextProgress >= 60) {
+            clearInterval(progressIntervalRef.current);
+          }
+          return {
+            ...prev,
+            current: Math.min(nextProgress, 60),
+          };
+        });
+      }, 50);
+
+      // 로컬 스토리지에 저장
       const storageKey = `${album.title}_${album.id}`;
       localStorage.setItem(storageKey, JSON.stringify(album));
 
+      // 저장 완료 후 진행률 100%로 설정
       if (progressIntervalRef.current) {
         clearInterval(progressIntervalRef.current);
       }
-      
-      setDownloadState((prev) => ({
-        ...prev,
-        current: prev.total,
-      }));
+
+      // 60%에서 100%까지 빠르게 증가
+      progressIntervalRef.current = setInterval(() => {
+        setDownloadState((prev) => {
+          const nextProgress = prev.current + 2;
+          if (nextProgress >= 100) {
+            clearInterval(progressIntervalRef.current);
+            return {
+              ...prev,
+              current: 100,
+            };
+          }
+          return {
+            ...prev,
+            current: nextProgress,
+          };
+        });
+      }, 30);
+
+      // 100% 도달 후 잠시 대기했다가 상태 초기화
+      await new Promise(resolve => setTimeout(resolve, 500));
 
       // 다운로드 완료 후 상태 초기화
-      setTimeout(() => {
-        setDownloadState({
-          isDownloading: false,
-          current: 0,
-          total: 0,
-        });
-        // 현재 다운로드를 큐에서 제거하고 다음 다운로드 시작
-        removeFromDownloadQueue(album.id);
-      }, 500);
+      setDownloadState({
+        isDownloading: false,
+        current: 0,
+        total: 0,
+        totalSize: undefined
+      });
+      
+      // 현재 다운로드를 큐에서 제거하고 다음 다운로드 시작
+      removeFromDownloadQueue(album.id);
     } catch (error) {
       console.error("다운로드 처리 중 오류 발생:", error);
       if (progressIntervalRef.current) {
@@ -246,6 +270,7 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
         isDownloading: false,
         current: 0,
         total: 0,
+        totalSize: undefined
       });
       // 에러 발생 시 현재 다운로드를 큐에서 제거하고 다음 다운로드 시작
       removeFromDownloadQueue(album.id);
@@ -271,6 +296,7 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
       isDownloading: false,
       current: 0,
       total: 0,
+      totalSize: undefined
     });
     removeFromDownloadQueue(album.id);
   };
@@ -318,6 +344,7 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
           <DownloadProgress
             current={downloadState.current}
             total={downloadState.total}
+            totalSize={downloadState.totalSize}
             onCancel={handleCancelDownload}
           />
         ) : isInQueue(album.id) && !isDownloading(album.id) ? (

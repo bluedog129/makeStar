@@ -60,17 +60,21 @@ const CloseIcon = styled.img`
 interface DownloadProgressProps {
   current: number;
   total: number;
+  totalSize?: number;
   onCancel: () => void;
 }
 
-const DownloadProgress = ({ current, total, onCancel }: DownloadProgressProps) => {
+const DownloadProgress = ({ current, total, totalSize, onCancel }: DownloadProgressProps) => {
   const percentage = Math.round((current / total) * 100);
+  const progressText = totalSize 
+    ? `${totalSize} MB 중 ${percentage}%`
+    : `${percentage}%`;
 
   return (
     <ProgressContainer>
       <ProgressContent>
         <Spinner />
-        <ProgressText>{percentage}%</ProgressText>
+        <ProgressText>{progressText}</ProgressText>
       </ProgressContent>
       <CloseButton onClick={onCancel}>
         <CloseIcon src={closeIcon} alt="취소" />
