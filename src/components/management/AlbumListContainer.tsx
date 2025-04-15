@@ -4,6 +4,7 @@ import useAlbumStore from '../../store/albumStore';
 import sortingIcon from '../../assets/images/sorting.png';
 import smkebabIcon from '../../assets/images/smkebab.png';
 import { Album } from '../../types/album';
+import { formatDate } from '../../utils/date';
 
 const Container = styled.div`
   width: 100%;
@@ -142,7 +143,7 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
         <SubInfo>
           <span>{album.artist?.name}</span>
           <Dot>•</Dot>
-          <span>{album.released_at}</span>
+          <span>{formatDate(album.released_at)}</span>
         </SubInfo>
         <Count>수량 {publishedCount}</Count>
       </AlbumInfo>
