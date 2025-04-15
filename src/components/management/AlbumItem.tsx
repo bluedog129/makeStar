@@ -127,14 +127,11 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
 
       const downloadInfo = await getDownloadInfo(album.id);
 
-      // 로컬 스토리지에 다운로드 정보 저장
+      // 로컬 스토리지에 앨범 정보만 저장
       const storageKey = `${album.title}_${album.id}`;
       localStorage.setItem(
         storageKey,
-        JSON.stringify({
-          ...downloadInfo,
-          savedAt: new Date().toISOString(),
-        })
+        JSON.stringify(album)
       );
 
       clearInterval(progressInterval);
