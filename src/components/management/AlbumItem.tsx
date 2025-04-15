@@ -5,6 +5,7 @@ import { formatDate } from "../../utils/date";
 import smkebabIcon from "../../assets/images/smKebab.png";
 import SelectForm from "./SelectForm";
 import { getDownloadInfo } from "../../api/album";
+import DownloadProgress from "./DownloadProgress";
 
 const AlbumItemContainer = styled.div`
   width: 100%;
@@ -16,10 +17,17 @@ const AlbumItemContainer = styled.div`
   margin-bottom: 16px;
 `;
 
-const AlbumImage = styled.img`
+const AlbumImage = styled.div`
   width: 54px;
   height: 85px;
-  object-fit: cover;
+  overflow: hidden;
+  border-radius: 4px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 
 const AlbumInfo = styled.div`
@@ -79,37 +87,101 @@ interface AlbumItemProps {
   album: Album;
 }
 
+interface DownloadState {
+  isDownloading: boolean;
+  current: number;
+  total: number;
+}
+
 const AlbumItem = ({ album }: AlbumItemProps) => {
   const [isSelectOpen, setIsSelectOpen] = useState(false);
+  const [downloadState, setDownloadState] = useState<DownloadState>({
+    isDownloading: false,
+    current: 0,
+    total: 0,
+  });
 
   const handleDownload = async () => {
     try {
+      setDownloadState({
+        isDownloading: true,
+        current: 0,
+        total: 100, // 임시로 100으로 설정
+      });
+
+      // 다운로드 진행 상태를 시뮬레이션 (실제 구현 시 API 응답으로 대체)
+      const simulateProgress = () => {
+        setDownloadState((prev) => {
+          if (prev.current >= prev.total) {
+            clearInterval(progressInterval);
+            return prev;
+          }
+          return {
+            ...prev,
+            current: prev.current + 1,
+          };
+        });
+      };
+
+      const progressInterval = setInterval(simulateProgress, 50);
+
       const downloadInfo = await getDownloadInfo(album.id);
-      
+
       // 로컬 스토리지에 다운로드 정보 저장
       const storageKey = `album_download_${album.id}`;
-      localStorage.setItem(storageKey, JSON.stringify({
-        ...downloadInfo,
-        savedAt: new Date().toISOString(),
+      localStorage.setItem(
+        storageKey,
+        JSON.stringify({
+          ...downloadInfo,
+          savedAt: new Date().toISOString(),
+        })
+      );
+
+      clearInterval(progressInterval);
+      setDownloadState((prev) => ({
+        ...prev,
+        current: prev.total,
       }));
 
-      console.log('Download info saved for album:', album.id);
+      // 다운로드 완료 후 상태 초기화 (약간의 딜레이 후)
+      setTimeout(() => {
+        setDownloadState({
+          isDownloading: false,
+          current: 0,
+          total: 0,
+        });
+      }, 500);
     } catch (error) {
-      console.error('Error handling download:', error);
+      console.error("Error handling download:", error);
+      setDownloadState({
+        isDownloading: false,
+        current: 0,
+        total: 0,
+      });
     }
+  };
+
+  const handleCancelDownload = () => {
+    setDownloadState({
+      isDownloading: false,
+      current: 0,
+      total: 0,
+    });
   };
 
   const handleDelete = () => {
     console.log("Delete album:", album.id);
   };
 
-  const publishedCount = album.published_album_list?.length || 0;
   const coverImage =
     album.published_album_list?.[0]?.box_image_url || album.coverImage;
+  const publishedCount = album.published_album_list?.length || 0;
 
   return (
     <AlbumItemContainer>
-      <AlbumImage src={coverImage} alt={album.title} />
+      <AlbumImage>
+        <img src={coverImage} alt={album.title} />
+      </AlbumImage>
       <AlbumInfo>
         <TitleContainer>
           <Title>{album.title}</Title>
@@ -123,12 +195,22 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
             />
           </MenuButton>
         </TitleContainer>
-        <SubInfo>
-          <span>{album.artist?.name}</span>
-          <Dot>•</Dot>
-          <span>{formatDate(album.released_at)}</span>
-        </SubInfo>
-        <Count>수량 {publishedCount}</Count>
+        {downloadState.isDownloading ? (
+          <DownloadProgress
+            current={downloadState.current}
+            total={downloadState.total}
+            onCancel={handleCancelDownload}
+          />
+        ) : (
+          <>
+            <SubInfo>
+              <span>{album.artist?.name}</span>
+              <Dot>•</Dot>
+              <span>{formatDate(album.released_at)}</span>
+            </SubInfo>
+            <Count>수량 {publishedCount}</Count>
+          </>
+        )}
       </AlbumInfo>
     </AlbumItemContainer>
   );
