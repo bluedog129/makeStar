@@ -69,7 +69,7 @@ const DownloadProgress = ({ current, total, onCancel }: DownloadProgressProps) =
     <ProgressContainer>
       <ProgressContent>
         <Spinner />
-        <ProgressText>{current} 중 {percentage}%</ProgressText>
+        <ProgressText>{percentage}%</ProgressText>
       </ProgressContent>
       <CloseButton onClick={onCancel}>
         <CloseIcon src={closeIcon} alt="취소" />
