@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import { Album } from "../../types/album";
 import { formatDate } from "../../utils/date";
@@ -101,46 +101,63 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
     total: 0,
   });
 
+  // 취소 플래그와 인터벌 참조를 useRef로 생성
+  const isCancelledRef = useRef(false);
+  const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
   const handleDownload = async () => {
-    try {
-      setDownloadState({
-        isDownloading: true,
-        current: 0,
-        total: 100, // 임시로 100으로 설정
-      });
+    // 새로운 다운로드 시작 시 취소 플래그 초기화
+    isCancelledRef.current = false;
+    setDownloadState({
+      isDownloading: true,
+      current: 0,
+      total: 100, // 시뮬레이션 용 값이며 실제 값으로 수정 가능
+    });
 
-      // 다운로드 진행 상태를 시뮬레이션 (실제 구현 시 API 응답으로 대체)
-      const simulateProgress = () => {
-        setDownloadState((prev) => {
-          if (prev.current >= prev.total) {
-            clearInterval(progressInterval);
-            return prev;
+    // 진행률 업데이트 함수
+    const simulateProgress = () => {
+      setDownloadState((prev) => {
+        if (prev.current >= prev.total) {
+          if (progressIntervalRef.current) {
+            clearInterval(progressIntervalRef.current);
           }
-          return {
-            ...prev,
-            current: prev.current + 1,
-          };
-        });
-      };
+          return prev;
+        }
+        return {
+          ...prev,
+          current: prev.current + 1,
+        };
+      });
+    };
 
-      const progressInterval = setInterval(simulateProgress, 50);
+    // 진행률 업데이트를 위해 50ms마다 실행되는 인터벌 시작
+    progressIntervalRef.current = setInterval(simulateProgress, 50);
 
+    try {
       const downloadInfo = await getDownloadInfo(album.id);
 
-      // 로컬 스토리지에 앨범 정보만 저장
-      const storageKey = `${album.title}_${album.id}`;
-      localStorage.setItem(
-        storageKey,
-        JSON.stringify(album)
-      );
+      // API 호출 후 취소 여부 확인
+      if (isCancelledRef.current) {
+        console.log("다운로드가 취소되어 로컬 저장을 생략합니다.");
+        return;
+      }
 
-      clearInterval(progressInterval);
+      // 로컬 스토리지에 앨범 정보 저장
+      const storageKey = `${album.title}_${album.id}`;
+      localStorage.setItem(storageKey, JSON.stringify(album));
+
+      // 진행률 인터벌 종료
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current);
+      }
+      
+      // 진행률을 최대로 설정
       setDownloadState((prev) => ({
         ...prev,
         current: prev.total,
       }));
 
-      // 다운로드 완료 후 상태 초기화 (약간의 딜레이 후)
+      // 다운로드 완료 후 약간의 지연 후 상태 초기화
       setTimeout(() => {
         setDownloadState({
           isDownloading: false,
@@ -149,7 +166,11 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
         });
       }, 500);
     } catch (error) {
-      console.error("Error handling download:", error);
+      console.error("다운로드 처리 중 오류 발생:", error);
+      // 에러 발생 시 인터벌 종료 후 상태 초기화
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current);
+      }
       setDownloadState({
         isDownloading: false,
         current: 0,
@@ -159,6 +180,13 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
   };
 
   const handleCancelDownload = () => {
+    // 취소 버튼 클릭 시 취소 플래그를 true로 설정
+    isCancelledRef.current = true;
+    // 진행 중인 인터벌 종료
+    if (progressIntervalRef.current) {
+      clearInterval(progressIntervalRef.current);
+    }
+    // 다운로드 상태 초기화
     setDownloadState({
       isDownloading: false,
       current: 0,
@@ -170,7 +198,7 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
     // 로컬 스토리지에서 해당 앨범 데이터 삭제
     const storageKey = `${album.title}_${album.id}`;
     localStorage.removeItem(storageKey);
-    console.log("Delete album:", album.id);
+    console.log("앨범 삭제:", album.id);
   };
 
   const coverImage =
@@ -185,10 +213,12 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
       <AlbumInfo>
         <TitleContainer>
           <Title>{album.title}</Title>
-          <MenuButton onClick={(e) => {
-            e.stopPropagation();
-            setIsSelectOpen(true);
-          }}>
+          <MenuButton
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsSelectOpen(true);
+            }}
+          >
             <MenuIcon src={smkebabIcon} alt="메뉴" />
             <SelectForm
               isOpen={isSelectOpen}
