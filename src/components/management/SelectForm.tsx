@@ -3,8 +3,7 @@ import styled from 'styled-components';
 
 const SelectContainer = styled.div<{ isOpen: boolean }>`
   position: absolute;
-  right: 100px;
-  transform: translateY(-50%);
+  right: 105px;
   width: 140px;
   background: white;
   border-radius: 8px;
