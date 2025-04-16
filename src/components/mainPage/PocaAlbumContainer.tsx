@@ -5,10 +5,7 @@ import { FallbackImageMap } from "../../types/image";
 import PocaAlbumInfo from "./PocaAlbumInfo";
 import AlbumSwiper from "./AlbumSwiper";
 import useAlbumStore from "../../store/albumStore";
-import {
-  Container,
-  ErrorText,
-} from "../../styles/PocaAlbumContainer.styles";
+import { Container, ErrorText } from "../../styles/PocaAlbumContainer.styles";
 import { LoaderContainer, Loader } from "../../styles/Loader.styles";
 import { mockAlbumData } from "../../mocks/albumData";
 import NotificationMessage from "../common/NotificationMessage";
@@ -64,7 +61,7 @@ const PocaAlbumContainer = () => {
             const processedAlbum = {
               ...album,
               coverImage,
-              isUpdate: album.version_code > 1
+              isUpdate: album.version_code > 1,
             };
 
             return processedAlbum;
@@ -74,7 +71,7 @@ const PocaAlbumContainer = () => {
           setAlbums(processedAlbums);
           setAlbumData({
             ...data,
-            album_list: processedAlbums
+            album_list: processedAlbums,
           });
         }
       } catch (err) {
@@ -84,17 +81,17 @@ const PocaAlbumContainer = () => {
         const processedMockData = mockAlbumData.album_list.map((album) => {
           const artistName = album.artist?.name || "";
           const coverImage = fallbackImages[artistName] || noImage;
-          
+
           return {
             ...album,
             coverImage,
-            isUpdate: album.version_code > 1
+            isUpdate: album.version_code > 1,
           };
         });
 
         setAlbumData({
           ...mockAlbumData,
-          album_list: processedMockData
+          album_list: processedMockData,
         });
       } finally {
         setLoading(false);
@@ -120,7 +117,10 @@ const PocaAlbumContainer = () => {
 
   return (
     <Container>
-      <AlbumSwiper albums={albumData.album_list} onSlideChange={setCurrentIndex} />
+      <AlbumSwiper
+        albums={albumData.album_list}
+        onSlideChange={setCurrentIndex}
+      />
       <PocaAlbumInfo
         title={currentAlbum.title}
         artist={currentAlbum.artist?.name || ""}
@@ -128,11 +128,12 @@ const PocaAlbumContainer = () => {
       />
       {isUsingDummyData && (
         <NotificationMessage
-          message="보유하신 앨범이 없거나 불러오지 못하여 샘플 앨범을 보여드리고 있습니다."
+          message={`보유하신 앨범이 없거나 불러오지 못하여
+          샘플 앨범을 보여드리고 있습니다.`}
         />
       )}
     </Container>
   );
 };
 
-export default PocaAlbumContainer; 
+export default PocaAlbumContainer;
