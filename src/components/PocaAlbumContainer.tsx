@@ -6,19 +6,17 @@ import AlbumSwiper from "./AlbumSwiper";
 import useAlbumStore from "../store/albumStore";
 import {
   Container,
-  LoadingText,
   ErrorText,
 } from "../styles/PocaAlbumContainer.styles";
+import { LoaderContainer, Loader } from "../styles/Loader.styles";
 import { mockAlbumData } from "../mocks/albumData";
 
-// Import fallback images
 import newjeans from "../assets/images/newjeans.png";
 import aespa from "../assets/images/aespa.png";
 import ive from "../assets/images/ive.png";
 import lesserafim from "../assets/images/lesserafim.png";
 import seventeen from "../assets/images/seventeen.png";
 
-// Fallback images mapping
 const fallbackImages: { [key: string]: string } = {
   NewJeans: newjeans,
   aespa: aespa,
@@ -67,7 +65,7 @@ const PocaAlbumContainer = () => {
             return processedAlbum;
           });
 
-          // API 데이터만 store에 저장
+          // API 데이터 store에 저장
           setAlbums(processedAlbums);
           setAlbumData({
             ...data,
@@ -88,7 +86,6 @@ const PocaAlbumContainer = () => {
           };
         });
 
-        // 더미 데이터는 로컬 상태에만 저장
         setAlbumData({
           ...mockAlbumData,
           album_list: processedMockData
@@ -99,10 +96,14 @@ const PocaAlbumContainer = () => {
     };
 
     fetchAlbumData();
-  }, []); // 의존성 배열에서 albums.length 제거
+  }, []);
 
   if (loading) {
-    return <LoadingText>로딩 중...</LoadingText>;
+    return (
+      <LoaderContainer>
+        <Loader />
+      </LoaderContainer>
+    );
   }
 
   if (!albumData || !albumData.result) {
