@@ -7,6 +7,7 @@ import useAlbumStore from "../store/albumStore";
 import {
   Container,
   ErrorText,
+  NotificationMessage,
 } from "../styles/PocaAlbumContainer.styles";
 import { LoaderContainer, Loader } from "../styles/Loader.styles";
 import { mockAlbumData } from "../mocks/albumData";
@@ -30,6 +31,7 @@ const PocaAlbumContainer = () => {
   const [albumData, setAlbumData] = useState<AlbumListResponse | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isUsingDummyData, setIsUsingDummyData] = useState(false);
   const { setAlbums } = useAlbumStore();
 
   useEffect(() => {
@@ -39,6 +41,7 @@ const PocaAlbumContainer = () => {
         const data = await getOwnAlbumList();
 
         if (data && data.result && data.album_list) {
+          setIsUsingDummyData(false);
           const processedAlbums = data.album_list.map((album) => {
             let coverImage = null;
 
@@ -74,6 +77,7 @@ const PocaAlbumContainer = () => {
         }
       } catch (err) {
         console.error("API 호출 실패, 더미 데이터를 사용합니다:", err);
+        setIsUsingDummyData(true);
 
         const processedMockData = mockAlbumData.album_list.map((album) => {
           const artistName = album.artist?.name || "";
@@ -120,6 +124,11 @@ const PocaAlbumContainer = () => {
         artist={currentAlbum.artist?.name || ""}
         releasedAt={currentAlbum.released_at || ""}
       />
+      {isUsingDummyData && (
+        <NotificationMessage>
+          보유하신 앨범이 없거나 불러오지 못하여<br />샘플 앨범을 보여드리고 있습니다.
+        </NotificationMessage>
+      )}
     </Container>
   );
 };

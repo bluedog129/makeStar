@@ -29,6 +29,7 @@ export const StyledSwiperContainer = styled.div`
 export const AlbumCard = styled.div`
   width: 100%;
   max-width: 280px;
+  aspect-ratio: 1/1.5;
   border-radius: 8px;
   overflow: visible;
   position: relative;
@@ -61,7 +62,7 @@ export const AlbumCard = styled.div`
 export const AlbumImage = styled.div`
   border-radius: 8px;
   width: 100%;
-  height: 280px;
+  height: 100%;
   display: block;
   position: relative;
   overflow: hidden;
@@ -70,7 +71,7 @@ export const AlbumImage = styled.div`
     width: 100%;
     height: 100%;
     display: block;
-    object-fit: contain;
+    object-fit: cover;
     border-radius: 8px;
   }
 `;
