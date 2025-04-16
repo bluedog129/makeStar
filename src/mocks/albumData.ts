@@ -16,7 +16,8 @@ export const mockAlbumData: AlbumListResponse = {
         name: "NewJeans"
       },
       count: 5,
-      published_album_list: []
+      published_album_list: [],
+      isUpdate: false
     },
     {
       id: 2,
@@ -28,7 +29,8 @@ export const mockAlbumData: AlbumListResponse = {
         name: "SEVENTEEN"
       },
       count: 3,
-      published_album_list: []
+      published_album_list: [],
+      isUpdate: false
     },
     {
       id: 3,
@@ -40,7 +42,8 @@ export const mockAlbumData: AlbumListResponse = {
         name: "LE SSERAFIM"
       },
       count: 4,
-      published_album_list: []
+      published_album_list: [],
+      isUpdate: false
     },
     {
       id: 4,
@@ -52,7 +55,8 @@ export const mockAlbumData: AlbumListResponse = {
         name: "IVE"
       },
       count: 2,
-      published_album_list: []
+      published_album_list: [],
+      isUpdate: false
     },
     {
       id: 5,
@@ -64,7 +68,8 @@ export const mockAlbumData: AlbumListResponse = {
         name: "aespa"
       },
       count: 6,
-      published_album_list: []
+      published_album_list: [],
+      isUpdate: false
     }
   ]
 }; 
