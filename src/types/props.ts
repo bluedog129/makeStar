@@ -64,7 +64,6 @@ export interface SortOptionStyleProps {
   $isSelected: boolean;
 }
 
-// 스타일 관련 Props
 export interface StyledAlbumProps {
   $isInactive: boolean;
 }
@@ -85,5 +84,3 @@ export interface SubInfoStyleProps {
 export interface CountStyleProps {
   $isInactive: boolean;
 }
-
-// 앨범 관련 다른 컴포넌트의 props 타입들도 여기에 추가할 수 있습니다. 
