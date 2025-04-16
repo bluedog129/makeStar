@@ -11,6 +11,7 @@ import {
 import { LoaderContainer, Loader } from "../../styles/Loader.styles";
 import { mockAlbumData } from "../../mocks/albumData";
 import NotificationMessage from "../common/NotificationMessage";
+import noImage from "../../assets/images/noImage.png";
 
 import newjeans from "../../assets/images/newjeans.png";
 import aespa from "../../assets/images/aespa.png";
@@ -56,7 +57,7 @@ const PocaAlbumContainer = () => {
 
             if (!coverImage) {
               const artistName = album.artist?.name || "";
-              coverImage = fallbackImages[artistName] || fallbackImages.default;
+              coverImage = fallbackImages[artistName] || noImage;
             }
 
             const processedAlbum = {
@@ -81,7 +82,7 @@ const PocaAlbumContainer = () => {
 
         const processedMockData = mockAlbumData.album_list.map((album) => {
           const artistName = album.artist?.name || "";
-          const coverImage = fallbackImages[artistName] || fallbackImages.default;
+          const coverImage = fallbackImages[artistName] || noImage;
           
           return {
             ...album,
