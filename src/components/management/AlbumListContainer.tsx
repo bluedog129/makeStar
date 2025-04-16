@@ -1,8 +1,8 @@
 import { useState, useMemo } from 'react';
-import useAlbumStore from '../../store/albumStore';
-import sortingIcon from '../../assets/images/sorting.png';
-import AlbumItem from './AlbumItem';
-import SortBottomSheet from './SortBottomSheet';
+import useAlbumStore from '@/store/albumStore';
+import sortingIcon from '@/assets/images/sorting.png';
+import AlbumItem from '@/components/management/AlbumItem';
+import SortBottomSheet from '@/components/management/SortBottomSheet';
 import {
   Container,
   SummaryContainer,
@@ -12,7 +12,7 @@ import {
   SortButton,
   SortIcon,
   SortText,
-} from '../../styles/AlbumListContainer.styles';
+} from '@/styles/AlbumListContainer.styles';
 
 const AlbumListContainer = () => {
   const { albums } = useAlbumStore();

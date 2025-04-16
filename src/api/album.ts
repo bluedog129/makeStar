@@ -1,5 +1,5 @@
-import { API_HEADERS, getEndpoint } from './config';
-import { AlbumListResponse, DownloadInfo } from '../types/album';
+import { API_HEADERS, getEndpoint } from '@/api/config';
+import { AlbumListResponse, DownloadInfo } from '@/types/album';
 
 export const getOwnAlbumList = async (): Promise<AlbumListResponse> => {
   const url = getEndpoint('/get_own_album_list_info/');

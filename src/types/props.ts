@@ -1,4 +1,4 @@
-import { Album } from './album';
+import { Album } from '@/types/album';
 
 // Album 컴포넌트 Props
 export interface AlbumSwiperProps {

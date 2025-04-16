@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import closeIcon from '../assets/images/close.png';
+import closeIcon from '@/assets/images/close.png';
 
 export const TopbarContainer = styled.div`
   width: 100%;

@@ -1,4 +1,4 @@
-import { AlbumListResponse } from '../types/album';
+import { AlbumListResponse } from '@/types/album';
 
 export const mockAlbumData: AlbumListResponse = {
   result: true,

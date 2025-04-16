@@ -1,21 +1,21 @@
 import { useEffect, useState } from "react";
-import { getOwnAlbumList } from "../../api/album";
-import { AlbumListResponse } from "../../types/album";
-import { FallbackImageMap } from "../../types/image";
-import PocaAlbumInfo from "./PocaAlbumInfo";
-import AlbumSwiper from "./AlbumSwiper";
-import useAlbumStore from "../../store/albumStore";
-import { Container, ErrorText } from "../../styles/PocaAlbumContainer.styles";
-import { LoaderContainer, Loader } from "../../styles/Loader.styles";
-import { mockAlbumData } from "../../mocks/albumData";
-import NotificationMessage from "../common/NotificationMessage";
-import noImage from "../../assets/images/noImage.png";
+import { getOwnAlbumList } from "@/api/album";
+import { AlbumListResponse } from "@/types/album";
+import { FallbackImageMap } from "@/types/image";
+import PocaAlbumInfo from "@/components/mainPage/PocaAlbumInfo";
+import AlbumSwiper from "@/components/mainPage/AlbumSwiper";
+import useAlbumStore from "@/store/albumStore";
+import { Container, ErrorText } from "@/styles/PocaAlbumContainer.styles";
+import { LoaderContainer, Loader } from "@/styles/Loader.styles";
+import { mockAlbumData } from "@/mocks/albumData";
+import NotificationMessage from "@/components/common/NotificationMessage";
+import noImage from "@/assets/images/noImage.png";
 
-import newjeans from "../../assets/images/newjeans.png";
-import aespa from "../../assets/images/aespa.png";
-import ive from "../../assets/images/ive.png";
-import lesserafim from "../../assets/images/lesserafim.png";
-import seventeen from "../../assets/images/seventeen.png";
+import newjeans from "@/assets/images/newjeans.png";
+import aespa from "@/assets/images/aespa.png";
+import ive from "@/assets/images/ive.png";
+import lesserafim from "@/assets/images/lesserafim.png";
+import seventeen from "@/assets/images/seventeen.png";
 
 const fallbackImages: FallbackImageMap = {
   NewJeans: newjeans,

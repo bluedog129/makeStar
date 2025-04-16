@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { StyledAlbumProps, AlbumInfoStyleProps, SubInfoStyleProps, CountStyleProps } from "../types/props";
+import { StyledAlbumProps, AlbumInfoStyleProps, SubInfoStyleProps, CountStyleProps } from "@/types/props";
 
 export const AlbumItemContainer = styled.div`
   width: 100%;

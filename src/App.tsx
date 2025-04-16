@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AppWrapper } from './styles/App.styles';
-import AlbumManagement from './pages/AlbumManagement';
-import MainPage from './pages/MainPage';
+import { AppWrapper } from '@/styles/App.styles';
+import AlbumManagement from '@/pages/AlbumManagement';
+import MainPage from '@/pages/MainPage';
 
 function App() {
   return (

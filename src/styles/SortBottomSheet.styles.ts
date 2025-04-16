@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { OverlayStyleProps, SheetStyleProps, SortOptionStyleProps } from '../types/props';
+import { OverlayStyleProps, SheetStyleProps, SortOptionStyleProps } from '@/types/props';
 
 export const Overlay = styled.div<OverlayStyleProps>`
   position: fixed;

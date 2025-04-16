@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { NotificationContainerProps } from '../types/notification';
+import { NotificationContainerProps } from '@/types/notification';
 
 export const NotificationContainer = styled.div<NotificationContainerProps>`
   position: fixed;

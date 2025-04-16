@@ -1,16 +1,16 @@
 import { useState } from 'react';
-import pinkCheckIcon from '../../assets/images/pinkCheck.png';
+import pinkCheckIcon from '@/assets/images/pinkCheck.png';
 import {
   SortType,
   SortBottomSheetProps,
-} from '../../types/props';
+} from '@/types/props';
 import {
   Overlay,
   Sheet,
   SortOption,
   CheckIcon,
   SortOptionsContainer,
-} from '../../styles/SortBottomSheet.styles';
+} from '@/styles/SortBottomSheet.styles';
 
 const SortBottomSheet = ({ isOpen, onClose, onSort }: SortBottomSheetProps) => {
   const [selectedSort, setSelectedSort] = useState<SortType>('latest');

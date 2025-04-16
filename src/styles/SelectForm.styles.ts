@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { SelectContainerStyleProps } from '../types/props';
+import { SelectContainerStyleProps } from '@/types/props';
 
 export const SelectContainer = styled.div<SelectContainerStyleProps>`
   position: absolute;

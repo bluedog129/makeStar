@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Album } from '../types/album';
+import { Album } from '@/types/album';
 
 interface DownloadQueueItem {
   albumId: number;

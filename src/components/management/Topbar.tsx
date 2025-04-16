@@ -3,7 +3,7 @@ import {
   TopbarContainer,
   Title,
   CloseButton,
-} from '../../styles/Topbar.styles';
+} from '@/styles/Topbar.styles';
 
 const Topbar = () => {
   const navigate = useNavigate();

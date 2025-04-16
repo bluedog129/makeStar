@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import Topbar from '../components/management/Topbar';
-import AlbumListContainer from '../components/management/AlbumListContainer';
-import { AppContainer } from '../styles/App.styles';
+import Topbar from '@/components/management/Topbar';
+import AlbumListContainer from '@/components/management/AlbumListContainer';
+import { AppContainer } from '@/styles/App.styles';
 
 const ManagementContainer = styled(AppContainer)`
   padding: 0;

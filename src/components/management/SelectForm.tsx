@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
-import { SelectFormProps } from '../../types/props';
-import { SelectContainer, SelectItem } from '../../styles/SelectForm.styles';
+import { SelectFormProps } from '@/types/props';
+import { SelectContainer, SelectItem } from '@/styles/SelectForm.styles';
 
 const SelectForm = ({
   isOpen,

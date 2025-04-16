@@ -1,21 +1,21 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Swiper as SwiperType } from 'swiper';
-import { AlbumSwiperProps } from '../../types/props';
+import { AlbumSwiperProps } from '@/types/props';
 import {
   StyledSwiperContainer,
   AlbumCard,
   AlbumImage,
   UpdateBadge,
   GradientBackground
-} from '../../styles/AlbumSwiper.styles';
-import { mockAlbumData } from '../../mocks/albumData';
+} from '@/styles/AlbumSwiper.styles';
+import { mockAlbumData } from '@/mocks/albumData';
 import 'swiper/css';
 
-import newjeans from '../../assets/images/newjeans.png';
-import aespa from '../../assets/images/aespa.png';
-import ive from '../../assets/images/ive.png';
-import lesserafim from '../../assets/images/lesserafim.png';
-import seventeen from '../../assets/images/seventeen.png';
+import newjeans from '@/assets/images/newjeans.png';
+import aespa from '@/assets/images/aespa.png';
+import ive from '@/assets/images/ive.png';
+import lesserafim from '@/assets/images/lesserafim.png';
+import seventeen from '@/assets/images/seventeen.png';
 
 const albumImages = {
   1: newjeans,

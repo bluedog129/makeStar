@@ -1,5 +1,5 @@
-import closeIcon from '../../assets/images/close.png';
-import { DownloadProgressProps } from '../../types/props';
+import closeIcon from '@/assets/images/close.png';
+import { DownloadProgressProps } from '@/types/props';
 import {
   ProgressContainer,
   ProgressContent,
@@ -7,7 +7,7 @@ import {
   ProgressText,
   CloseButton,
   CloseIcon,
-} from '../../styles/DownloadProgress.styles';
+} from '@/styles/DownloadProgress.styles';
 
 const DownloadProgress = ({ current, total, totalSize, onCancel }: DownloadProgressProps) => {
   const percentage = Math.round((current / total) * 100);

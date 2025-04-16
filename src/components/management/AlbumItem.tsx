@@ -1,16 +1,16 @@
 import { useState, useRef, useEffect } from "react";
-import { formatDate } from "../../utils/date";
-import { getImageSource } from "../../utils/image";
-import smkebabIcon from "../../assets/images/smKebab.png";
-import SelectForm from "./SelectForm";
-import { getDownloadInfo } from "../../api/album";
-import DownloadProgress from "./DownloadProgress";
-import useAlbumStore from "../../store/albumStore";
-import NotificationMessage from "../common/NotificationMessage";
+import { formatDate } from "@/utils/date";
+import { getImageSource } from "@/utils/image";
+import smkebabIcon from "@/assets/images/smKebab.png";
+import SelectForm from "@/components/management/SelectForm";
+import { getDownloadInfo } from "@/api/album";
+import DownloadProgress from "@/components/management/DownloadProgress";
+import useAlbumStore from "@/store/albumStore";
+import NotificationMessage from "@/components/common/NotificationMessage";
 import {
   AlbumItemProps,
   DownloadState,
-} from "../../types/props";
+} from "@/types/props";
 import {
   AlbumItemContainer,
   Title,
@@ -25,7 +25,7 @@ import {
   WaitingContainer,
   Spinner,
   WaitingText,
-} from "../../styles/AlbumItem.styles";
+} from "@/styles/AlbumItem.styles";
 
 const AlbumItem = ({ album }: AlbumItemProps) => {
   const [isSelectOpen, setIsSelectOpen] = useState(false);

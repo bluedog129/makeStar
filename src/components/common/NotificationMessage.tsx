@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { NotificationMessageProps } from '../../types/notification';
-import { NotificationContainer } from '../../styles/NotificationMessage.styles';
+import { NotificationMessageProps } from '@/types/notification';
+import { NotificationContainer } from '@/styles/NotificationMessage.styles';
 
 const NotificationMessage = ({ 
   message, 
