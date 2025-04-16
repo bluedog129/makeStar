@@ -7,10 +7,10 @@ import useAlbumStore from "../store/albumStore";
 import {
   Container,
   ErrorText,
-  NotificationMessage,
 } from "../styles/PocaAlbumContainer.styles";
 import { LoaderContainer, Loader } from "../styles/Loader.styles";
 import { mockAlbumData } from "../mocks/albumData";
+import NotificationMessage from "./common/NotificationMessage";
 
 import newjeans from "../assets/images/newjeans.png";
 import aespa from "../assets/images/aespa.png";
@@ -125,9 +125,9 @@ const PocaAlbumContainer = () => {
         releasedAt={currentAlbum.released_at || ""}
       />
       {isUsingDummyData && (
-        <NotificationMessage>
-          보유하신 앨범이 없거나 불러오지 못하여<br />샘플 앨범을 보여드리고 있습니다.
-        </NotificationMessage>
+        <NotificationMessage
+          message="보유하신 앨범이 없거나 불러오지 못하여 샘플 앨범을 보여드리고 있습니다."
+        />
       )}
     </Container>
   );

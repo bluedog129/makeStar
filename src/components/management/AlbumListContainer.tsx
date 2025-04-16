@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import styled from 'styled-components';
 import useAlbumStore from '../../store/albumStore';
 import sortingIcon from '../../assets/images/sorting.png';

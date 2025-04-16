@@ -1,14 +1,8 @@
 import { HeaderContainer, TitleWrapper, AlbumManageButton } from '../styles/Header.styles';
 import { useNavigate } from 'react-router-dom';
 import useAlbumStore from '../store/albumStore';
-import { NotificationMessage } from '../styles/PocaAlbumContainer.styles';
 import { useState } from 'react';
-import styled from 'styled-components';
-
-const TopNotificationMessage = styled(NotificationMessage)`
-  top: 6%;
-  bottom: auto;
-`;
+import NotificationMessage from './common/NotificationMessage';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -33,9 +27,11 @@ const Header = () => {
         </AlbumManageButton>
       </TitleWrapper>
       {showNotification && (
-        <TopNotificationMessage>
-          보유하신 앨범이 없습니다.
-        </TopNotificationMessage>
+        <NotificationMessage 
+          message="보유하신 앨범이 없습니다."
+          onClose={() => setShowNotification(false)}
+          position="top"
+        />
       )}
     </HeaderContainer>
   );

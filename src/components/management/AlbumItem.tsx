@@ -8,6 +8,7 @@ import SelectForm from "./SelectForm";
 import { getDownloadInfo } from "../../api/album";
 import DownloadProgress from "./DownloadProgress";
 import useAlbumStore from "../../store/albumStore";
+import NotificationMessage from "../common/NotificationMessage";
 
 const AlbumItemContainer = styled.div`
   width: 100%;
@@ -166,6 +167,13 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
     total: 0,
     totalSize: undefined,
   });
+  const [notification, setNotification] = useState<{
+    message: string;
+    visible: boolean;
+  }>({
+    message: "",
+    visible: false,
+  });
 
   const {
     addToDownloadQueue,
@@ -292,6 +300,15 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
       return;
     }
 
+    // 이미 로컬 스토리지에 있는 경우 알림 표시
+    if (isInLocalStorage()) {
+      setNotification({
+        message: "이미 다운로드된 앨범입니다.",
+        visible: true,
+      });
+      return;
+    }
+
     // 다운로드 큐에 추가
     addToDownloadQueue(album.id);
   };
@@ -311,6 +328,15 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
   };
 
   const handleDelete = () => {
+    // 로컬 스토리지에 없는 경우 알림 표시
+    if (!isInLocalStorage()) {
+      setNotification({
+        message: "다운로드되지 않은 앨범입니다.",
+        visible: true,
+      });
+      return;
+    }
+
     // 로컬 스토리지에서 해당 앨범 데이터 삭제
     const storageKey = `${album.title}_${album.id}`;
     localStorage.removeItem(storageKey);
@@ -326,54 +352,62 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
   const publishedCount = album.published_album_list?.length || 0;
 
   return (
-    <AlbumItemContainer>
-      <AlbumImage $isInactive={!isInLocalStorage()}>
-        <img src={getImageSource(coverImage)} alt={album.title} />
-      </AlbumImage>
-      <AlbumInfo $isInactive={!isInLocalStorage()}>
-        <TitleContainer>
-          <Title>{album.title}</Title>
-          <MenuButton
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsSelectOpen(true);
-            }}
-          >
-            <MenuIcon src={smkebabIcon} alt="메뉴" />
-            <SelectForm
-              isOpen={isSelectOpen}
-              onClose={() => setIsSelectOpen(false)}
-              onDownload={handleDownload}
-              onDelete={handleDelete}
+    <>
+      <AlbumItemContainer>
+        <AlbumImage $isInactive={!isInLocalStorage()}>
+          <img src={getImageSource(coverImage)} alt={album.title} />
+        </AlbumImage>
+        <AlbumInfo $isInactive={!isInLocalStorage()}>
+          <TitleContainer>
+            <Title>{album.title}</Title>
+            <MenuButton
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsSelectOpen(true);
+              }}
+            >
+              <MenuIcon src={smkebabIcon} alt="메뉴" />
+              <SelectForm
+                isOpen={isSelectOpen}
+                onClose={() => setIsSelectOpen(false)}
+                onDownload={handleDownload}
+                onDelete={handleDelete}
+              />
+            </MenuButton>
+          </TitleContainer>
+          {downloadState.isDownloading ? (
+            <DownloadProgress
+              current={downloadState.current}
+              total={downloadState.total}
+              totalSize={downloadState.totalSize}
+              onCancel={handleCancelDownload}
             />
-          </MenuButton>
-        </TitleContainer>
-        {downloadState.isDownloading ? (
-          <DownloadProgress
-            current={downloadState.current}
-            total={downloadState.total}
-            totalSize={downloadState.totalSize}
-            onCancel={handleCancelDownload}
-          />
-        ) : isInQueue(album.id) && !isDownloading(album.id) ? (
-          <WaitingContainer>
-            <Spinner />
-            <WaitingText>대기중</WaitingText>
-          </WaitingContainer>
-        ) : (
-          <>
-            <SubInfo $isInactive={!isInLocalStorage()}>
-              <span>{album.artist?.name}</span>
-              <Dot>•</Dot>
-              <span>{formatDate(album.released_at)}</span>
-            </SubInfo>
-            <Count $isInactive={!isInLocalStorage()}>
-              타입 {album.version_code} · 수량 {publishedCount}
-            </Count>
-          </>
-        )}
-      </AlbumInfo>
-    </AlbumItemContainer>
+          ) : isInQueue(album.id) && !isDownloading(album.id) ? (
+            <WaitingContainer>
+              <Spinner />
+              <WaitingText>대기중</WaitingText>
+            </WaitingContainer>
+          ) : (
+            <>
+              <SubInfo $isInactive={!isInLocalStorage()}>
+                <span>{album.artist?.name}</span>
+                <Dot>•</Dot>
+                <span>{formatDate(album.released_at)}</span>
+              </SubInfo>
+              <Count $isInactive={!isInLocalStorage()}>
+                타입 {album.version_code} · 수량 {publishedCount}
+              </Count>
+            </>
+          )}
+        </AlbumInfo>
+      </AlbumItemContainer>
+      {notification.visible && (
+        <NotificationMessage
+          message={notification.message}
+          onClose={() => setNotification({ ...notification, visible: false })}
+        />
+      )}
+    </>
   );
 };
 
