@@ -17,4 +17,4 @@ const PocaAlbumInfo = ({ title, artist, releasedAt }: PocaAlbumInfoProps) => {
   );
 };
 
-export default PocaAlbumInfo; 
+export default PocaAlbumInfo;

@@ -1,12 +1,5 @@
 import { API_HEADERS, getEndpoint } from './config';
-import { AlbumListResponse } from '../types/album';
-
-interface DownloadInfo {
-  // API 응답 타입 정의
-  album_id: number;
-  headers: Headers;
-  // 다른 필요한 필드들도 여기에 추가
-}
+import { AlbumListResponse, DownloadInfo } from '../types/album';
 
 export const getOwnAlbumList = async (): Promise<AlbumListResponse> => {
   const url = getEndpoint('/get_own_album_list_info/');

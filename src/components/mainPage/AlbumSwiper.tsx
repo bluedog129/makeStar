@@ -8,6 +8,7 @@ import {
   UpdateBadge,
   GradientBackground
 } from '../../styles/AlbumSwiper.styles';
+import { mockAlbumData } from '../../mocks/albumData';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -19,79 +20,14 @@ import ive from '../../assets/images/ive.png';
 import lesserafim from '../../assets/images/lesserafim.png';
 import seventeen from '../../assets/images/seventeen.png';
 
-// Album data using project PNG files
-const albumData: Album[] = [
-  {
-    id: 1,
-    title: 'NewJeans Album',
-    coverImage: newjeans,
-    isUpdate: true,
-    version_code: 1,
-    count: 1,
-    published_album_list: [],
-    artist: {
-      id: 1,
-      name: 'NewJeans',
-    },
-    released_at: '2024.03.01',
-  },
-  {
-    id: 2,
-    title: 'Aespa Album',
-    coverImage: aespa,
-    isUpdate: false,
-    version_code: 1,
-    count: 1,
-    published_album_list: [],
-    artist: {
-      id: 2,
-      name: 'Aespa',
-    },
-    released_at: '2024.03.01',
-  },
-  {
-    id: 3,
-    title: 'IVE Album',
-    coverImage: ive,
-    isUpdate: true,
-    version_code: 1,
-    count: 1,
-    published_album_list: [],
-    artist: {
-      id: 3,
-      name: 'IVE',
-    },
-    released_at: '2024.03.01',
-  },
-  {
-    id: 4,
-    title: 'LE SSERAFIM Album',
-    coverImage: lesserafim,
-    isUpdate: false,
-    version_code: 1,
-    count: 1,
-    published_album_list: [],
-    artist: {
-      id: 4,
-      name: 'LE SSERAFIM',
-    },
-    released_at: '2024.03.01',
-  },
-  {
-    id: 5,
-    title: 'Seventeen Album',
-    coverImage: seventeen,
-    isUpdate: true,
-    version_code: 1,
-    count: 1,
-    published_album_list: [],
-    artist: {
-      id: 5,
-      name: 'Seventeen',
-    },
-    released_at: '2024.03.01',
-  },
-];
+// Map images to albums
+const albumImages = {
+  1: newjeans,
+  2: seventeen,
+  3: lesserafim,
+  4: ive,
+  5: aespa,
+};
 
 interface AlbumSwiperProps {
   albums?: Album[];
@@ -99,7 +35,10 @@ interface AlbumSwiperProps {
 }
 
 const AlbumSwiper = ({
-  albums = albumData,
+  albums = mockAlbumData.album_list.map(album => ({
+    ...album,
+    coverImage: albumImages[album.id as keyof typeof albumImages] || newjeans
+  })),
   onSlideChange,
 }: AlbumSwiperProps) => {
   const handleSlideChange = (swiper: SwiperType) => {

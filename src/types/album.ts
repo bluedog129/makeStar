@@ -32,3 +32,8 @@ export interface AlbumListResponse {
   external_data: null;
   album_list: Album[];
 }
+
+export interface DownloadInfo {
+  album_id: number;
+  headers: Headers;
+}

@@ -30,7 +30,6 @@ const Header = () => {
         <NotificationMessage 
           message="보유하신 앨범이 없습니다."
           onClose={() => setShowNotification(false)}
-          position="top"
         />
       )}
     </HeaderContainer>
