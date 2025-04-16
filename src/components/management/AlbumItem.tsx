@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
-import { Album } from "../../types/album";
 import { formatDate } from "../../utils/date";
 import { getImageSource } from "../../utils/image";
 import smkebabIcon from "../../assets/images/smKebab.png";
