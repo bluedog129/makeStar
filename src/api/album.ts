@@ -10,7 +10,6 @@ interface DownloadInfo {
 
 export const getOwnAlbumList = async (): Promise<AlbumListResponse> => {
   const url = getEndpoint('/get_own_album_list_info/');
-  console.log('Requesting URL:', url);
   
   try {
     const response = await fetch(url, {
@@ -35,7 +34,6 @@ export const getOwnAlbumList = async (): Promise<AlbumListResponse> => {
     }
 
     const data = await response.json();
-    console.log('API Response:', data);
     return data;
   } catch (error) {
     console.error('Error fetching album list:', error);

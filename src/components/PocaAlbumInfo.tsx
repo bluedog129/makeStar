@@ -1,6 +1,4 @@
-import React from 'react';
 import { InfoContainer, Title, Artist, ReleasedAt } from '../styles/PocaAlbumInfo.styles';
-import styled from 'styled-components';
 import { formatDate } from '../utils/date';
 
 interface PocaAlbumInfoProps {

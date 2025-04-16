@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AppWrapper } from './styles/App.styles';
 import AlbumManagement from './pages/AlbumManagement';

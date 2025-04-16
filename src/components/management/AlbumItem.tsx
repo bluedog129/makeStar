@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { Album } from "../../types/album";
 import { formatDate } from "../../utils/date";
@@ -33,12 +33,12 @@ const SubInfo = styled.div<StyledProps>`
   align-items: center;
   gap: 4px;
   font-size: 12px;
-  color: ${props => props.$isInactive ? '#A5A5A5' : '#6c6c6c'};
+  color: ${(props) => (props.$isInactive ? "#A5A5A5" : "#6c6c6c")};
 `;
 
 const Count = styled.span<StyledProps>`
   font-size: 11px;
-  color: ${props => props.$isInactive ? '#A5A5A5' : '#a5a5a5'};
+  color: ${(props) => (props.$isInactive ? "#A5A5A5" : "#a5a5a5")};
 `;
 
 interface AlbumImageProps {
@@ -63,13 +63,14 @@ const AlbumImage = styled.div<AlbumImageProps>`
   }
 
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: ${props => props.$isInactive ? 'rgba(0, 0, 0, 0.7)' : 'transparent'};
+    background: ${(props) =>
+      props.$isInactive ? "rgba(0, 0, 0, 0.7)" : "transparent"};
   }
 `;
 
@@ -78,9 +79,9 @@ const AlbumInfo = styled.div<AlbumInfoProps>`
   display: flex;
   flex-direction: column;
   gap: 4px;
-  
+
   ${Title} {
-    color: ${props => props.$isInactive ? '#A5A5A5' : '#000000'};
+    color: ${(props) => (props.$isInactive ? "#A5A5A5" : "#000000")};
   }
 `;
 
@@ -122,7 +123,7 @@ const Spinner = styled.div`
   width: 20px;
   height: 20px;
   border: 2px solid rgba(0, 0, 0, 0.1);
-  border-bottom-color: #FF0099;
+  border-bottom-color: #ff0099;
   border-radius: 50%;
   display: inline-block;
   box-sizing: border-box;
@@ -141,7 +142,7 @@ const Spinner = styled.div`
 const WaitingText = styled.span`
   font-size: 11px;
   font-weight: bold;
-  color: #6C6C6C;
+  color: #6c6c6c;
   display: flex;
   align-items: center;
 `;
@@ -163,14 +164,14 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
     isDownloading: false,
     current: 0,
     total: 0,
-    totalSize: undefined
+    totalSize: undefined,
   });
 
-  const { 
-    addToDownloadQueue, 
-    removeFromDownloadQueue, 
+  const {
+    addToDownloadQueue,
+    removeFromDownloadQueue,
     isDownloading,
-    isInQueue
+    isInQueue,
   } = useAlbumStore();
 
   const isCancelledRef = useRef(false);
@@ -190,23 +191,25 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
       isDownloading: true,
       current: 0,
       total: 100,
-      totalSize: undefined
+      totalSize: undefined,
     });
 
     try {
       const downloadInfo = await getDownloadInfo(album.id);
-      const contentLength = downloadInfo.headers.get('Content-Length');
-      const totalSizeMB = contentLength ? Number((parseInt(contentLength) / 1024 / 1024).toFixed(2)) : undefined;
+      const contentLength = downloadInfo.headers.get("Content-Length");
+      const totalSizeMB = contentLength
+        ? Number((parseInt(contentLength) / 1024 / 1024).toFixed(2))
+        : undefined;
 
       if (isCancelledRef.current) {
         console.log("다운로드가 취소되어 로컬 저장을 생략합니다.");
         return;
       }
 
-      setDownloadState(prev => ({
+      setDownloadState((prev) => ({
         ...prev,
         totalSize: totalSizeMB,
-        current: 30 // API 응답 받은 후 30%로 설정
+        current: 30, // API 응답 받은 후 30%로 설정
       }));
 
       // 진행률을 30%에서 60%까지 서서히 증가
@@ -255,16 +258,16 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
       }, 30);
 
       // 100% 도달 후 잠시 대기했다가 상태 초기화
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       // 다운로드 완료 후 상태 초기화
       setDownloadState({
         isDownloading: false,
         current: 0,
         total: 0,
-        totalSize: undefined
+        totalSize: undefined,
       });
-      
+
       // 현재 다운로드를 큐에서 제거하고 다음 다운로드 시작
       removeFromDownloadQueue(album.id);
     } catch (error) {
@@ -276,7 +279,7 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
         isDownloading: false,
         current: 0,
         total: 0,
-        totalSize: undefined
+        totalSize: undefined,
       });
       // 에러 발생 시 현재 다운로드를 큐에서 제거하고 다음 다운로드 시작
       removeFromDownloadQueue(album.id);
@@ -302,7 +305,7 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
       isDownloading: false,
       current: 0,
       total: 0,
-      totalSize: undefined
+      totalSize: undefined,
     });
     removeFromDownloadQueue(album.id);
   };
@@ -311,7 +314,6 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
     // 로컬 스토리지에서 해당 앨범 데이터 삭제
     const storageKey = `${album.title}_${album.id}`;
     localStorage.removeItem(storageKey);
-    console.log("앨범 삭제:", album.id);
   };
 
   const isInLocalStorage = () => {
@@ -365,7 +367,9 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
               <Dot>•</Dot>
               <span>{formatDate(album.released_at)}</span>
             </SubInfo>
-            <Count $isInactive={!isInLocalStorage()}>타입 {album.version_code} · 수량 {publishedCount}</Count>
+            <Count $isInactive={!isInLocalStorage()}>
+              타입 {album.version_code} · 수량 {publishedCount}
+            </Count>
           </>
         )}
       </AlbumInfo>

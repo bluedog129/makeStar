@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
-const SelectContainer = styled.div<{ isOpen: boolean }>`
+const SelectContainer = styled.div<{ $isOpen: boolean }>`
   position: absolute;
   right: 100%;
   top: 0%;
@@ -9,7 +9,7 @@ const SelectContainer = styled.div<{ isOpen: boolean }>`
   background: white;
   border-radius: 8px;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
-  display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
+  display: ${({ $isOpen }) => ($isOpen ? 'block' : 'none')};
   z-index: 100;
 `;
 
@@ -79,7 +79,7 @@ const SelectForm = ({
   if (!isOpen) return null;
 
   return (
-    <SelectContainer ref={containerRef} isOpen={isOpen}>
+    <SelectContainer ref={containerRef} $isOpen={isOpen}>
       <SelectItem onClick={handleItemClick(onDownload)}>
         앨범 다운로드
       </SelectItem>
