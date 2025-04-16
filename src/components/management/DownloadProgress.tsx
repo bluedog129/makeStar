@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import closeIcon from '../../assets/images/close.png';
+import { DownloadProgressProps } from '../../types/props';
 
 const ProgressContainer = styled.div`
   display: flex;
@@ -56,13 +57,6 @@ const CloseIcon = styled.img`
   width: 12px;
   height: 12px;
 `;
-
-interface DownloadProgressProps {
-  current: number;
-  total: number;
-  totalSize?: number;
-  onCancel: () => void;
-}
 
 const DownloadProgress = ({ current, total, totalSize, onCancel }: DownloadProgressProps) => {
   const percentage = Math.round((current / total) * 100);

@@ -1,14 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { NotificationMessageProps, NotificationContainerProps } from '../../types/notification';
 
-interface NotificationMessageProps {
-  message: string;
-  duration?: number;
-  onClose?: () => void;
-  position?: 'top' | 'bottom';
-}
-
-const NotificationContainer = styled.div<{ $position: 'top' | 'bottom' }>`
+const NotificationContainer = styled.div<NotificationContainerProps>`
   position: fixed;
   ${props => props.$position === 'top' ? 'top: 20px;' : 'bottom: 20px;'}
   left: 50%;
@@ -34,12 +28,12 @@ const NotificationContainer = styled.div<{ $position: 'top' | 'bottom' }>`
   }
 `;
 
-const NotificationMessage: React.FC<NotificationMessageProps> = ({ 
+const NotificationMessage = ({ 
   message, 
   duration = 3000, 
   onClose,
   position = 'bottom'
-}) => {
+}: NotificationMessageProps) => {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {

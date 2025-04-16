@@ -1,8 +1,15 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import pinkCheckIcon from '../../assets/images/pinkCheck.png';
+import {
+  SortType,
+  SortBottomSheetProps,
+  OverlayStyleProps,
+  SheetStyleProps,
+  SortOptionStyleProps
+} from '../../types/props';
 
-const Overlay = styled.div<{ $isOpen: boolean }>`
+const Overlay = styled.div<OverlayStyleProps>`
   position: fixed;
   top: 0;
   left: 0;
@@ -13,7 +20,7 @@ const Overlay = styled.div<{ $isOpen: boolean }>`
   z-index: 1000;
 `;
 
-const Sheet = styled.div<{ $isOpen: boolean }>`
+const Sheet = styled.div<SheetStyleProps>`
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
@@ -40,7 +47,7 @@ const Sheet = styled.div<{ $isOpen: boolean }>`
   }
 `;
 
-const SortOption = styled.button<{ $isSelected: boolean }>`
+const SortOption = styled.button<SortOptionStyleProps>`
   width: 100%;
   height: 56px;
   padding: 0px 8px 0px 22px;
@@ -62,14 +69,6 @@ const CheckIcon = styled.img`
 
 const SortOptionsContainer = styled.div`
 `;
-
-type SortType = 'latest' | 'name';
-
-interface SortBottomSheetProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSort?: (sortType: SortType) => void;
-}
 
 const SortBottomSheet = ({ isOpen, onClose, onSort }: SortBottomSheetProps) => {
   const [selectedSort, setSelectedSort] = useState<SortType>('latest');

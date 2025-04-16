@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import { SelectFormProps, SelectContainerStyleProps } from '../../types/props';
 
-const SelectContainer = styled.div<{ $isOpen: boolean }>`
+const SelectContainer = styled.div<SelectContainerStyleProps>`
   position: absolute;
   right: 100%;
   top: 0%;
@@ -38,13 +39,6 @@ const SelectItem = styled.button`
     border-radius: 0 0 8px 8px;
   }
 `;
-
-interface SelectFormProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onDownload: () => void;
-  onDelete: () => void;
-}
 
 const SelectForm = ({
   isOpen,

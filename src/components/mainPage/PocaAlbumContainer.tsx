@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getOwnAlbumList } from "../../api/album";
 import { AlbumListResponse } from "../../types/album";
+import { FallbackImageMap } from "../../types/image";
 import PocaAlbumInfo from "./PocaAlbumInfo";
 import AlbumSwiper from "./AlbumSwiper";
 import useAlbumStore from "../../store/albumStore";
@@ -19,14 +20,14 @@ import ive from "../../assets/images/ive.png";
 import lesserafim from "../../assets/images/lesserafim.png";
 import seventeen from "../../assets/images/seventeen.png";
 
-const fallbackImages: { [key: string]: string } = {
+const fallbackImages: FallbackImageMap = {
   NewJeans: newjeans,
   aespa: aespa,
   IVE: ive,
   "LE SSERAFIM": lesserafim,
   SEVENTEEN: seventeen,
   default: newjeans,
-};
+} as const;
 
 const PocaAlbumContainer = () => {
   const [albumData, setAlbumData] = useState<AlbumListResponse | null>(null);

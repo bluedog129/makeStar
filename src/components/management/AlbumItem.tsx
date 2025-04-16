@@ -9,6 +9,14 @@ import { getDownloadInfo } from "../../api/album";
 import DownloadProgress from "./DownloadProgress";
 import useAlbumStore from "../../store/albumStore";
 import NotificationMessage from "../common/NotificationMessage";
+import {
+  AlbumItemProps,
+  DownloadState,
+  StyledAlbumProps,
+  AlbumInfoStyleProps,
+  SubInfoStyleProps,
+  CountStyleProps
+} from "../../types/props";
 
 const AlbumItemContainer = styled.div`
   width: 100%;
@@ -25,11 +33,7 @@ const Title = styled.span`
   color: #000000;
 `;
 
-interface StyledProps {
-  $isInactive: boolean;
-}
-
-const SubInfo = styled.div<StyledProps>`
+const SubInfo = styled.div<SubInfoStyleProps>`
   display: flex;
   align-items: center;
   gap: 4px;
@@ -37,20 +41,12 @@ const SubInfo = styled.div<StyledProps>`
   color: ${(props) => (props.$isInactive ? "#A5A5A5" : "#6c6c6c")};
 `;
 
-const Count = styled.span<StyledProps>`
+const Count = styled.span<CountStyleProps>`
   font-size: 11px;
   color: ${(props) => (props.$isInactive ? "#A5A5A5" : "#a5a5a5")};
 `;
 
-interface AlbumImageProps {
-  $isInactive: boolean;
-}
-
-interface AlbumInfoProps {
-  $isInactive: boolean;
-}
-
-const AlbumImage = styled.div<AlbumImageProps>`
+const AlbumImage = styled.div<StyledAlbumProps>`
   width: 54px;
   height: 85px;
   overflow: hidden;
@@ -75,7 +71,7 @@ const AlbumImage = styled.div<AlbumImageProps>`
   }
 `;
 
-const AlbumInfo = styled.div<AlbumInfoProps>`
+const AlbumInfo = styled.div<AlbumInfoStyleProps>`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -147,17 +143,6 @@ const WaitingText = styled.span`
   display: flex;
   align-items: center;
 `;
-
-interface AlbumItemProps {
-  album: Album;
-}
-
-interface DownloadState {
-  isDownloading: boolean;
-  current: number;
-  total: number;
-  totalSize?: number; // MB 단위의 파일 크기
-}
 
 const AlbumItem = ({ album }: AlbumItemProps) => {
   const [isSelectOpen, setIsSelectOpen] = useState(false);
