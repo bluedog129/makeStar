@@ -91,7 +91,7 @@ const TitleContainer = styled.div`
   align-items: center;
 `;
 
-const MenuButton = styled.button`
+const MenuButton = styled.div`
   border: none;
   background: none;
   padding: 0;
