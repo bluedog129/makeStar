@@ -11,7 +11,6 @@ export const getOwnAlbumList = async (): Promise<AlbumListResponse> => {
         ...API_HEADERS,
         'Accept': 'application/json',
       },
-      credentials: 'include',
     });
 
     if (!response.ok) {

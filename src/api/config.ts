@@ -7,4 +7,5 @@ export const API_HEADERS = {
   'Authorization': API_AUTH_TOKEN,
 };
 
-export const getEndpoint = (path: string) => `${API_PATH}${path}`;
+// Use the full URL instead of relying on the proxy
+export const getEndpoint = (path: string) => `${API_BASE_URL}${API_PATH}${path}`;
