@@ -1,8 +1,8 @@
-import { HeaderContainer, TitleWrapper, AlbumManageButton } from '../styles/Header.styles';
+import { HeaderContainer, TitleWrapper, AlbumManageButton } from '../../styles/Header.styles';
 import { useNavigate } from 'react-router-dom';
-import useAlbumStore from '../store/albumStore';
+import useAlbumStore from '../../store/albumStore';
 import { useState } from 'react';
-import NotificationMessage from './common/NotificationMessage';
+import NotificationMessage from '../common/NotificationMessage';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -37,4 +37,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Header; 

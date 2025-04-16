@@ -1,5 +1,5 @@
-import { InfoContainer, Title, Artist, ReleasedAt } from '../styles/PocaAlbumInfo.styles';
-import { formatDate } from '../utils/date';
+import { InfoContainer, Title, Artist, ReleasedAt } from '../../styles/PocaAlbumInfo.styles';
+import { formatDate } from '../../utils/date';
 
 interface PocaAlbumInfoProps {
   title: string;

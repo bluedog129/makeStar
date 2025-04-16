@@ -1,6 +1,6 @@
 import { AppContainer } from '../styles/App.styles';
-import Header from '../components/Header';
-import PocaAlbumContainer from '../components/PocaAlbumContainer';
+import Header from '../components/mainPage/Header';
+import PocaAlbumContainer from '../components/mainPage/PocaAlbumContainer';
 
 const MainPage = () => {
   return (

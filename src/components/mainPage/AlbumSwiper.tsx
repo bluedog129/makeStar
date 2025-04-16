@@ -1,23 +1,23 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Swiper as SwiperType } from 'swiper';
-import { Album } from '../types/album';
+import { Album } from '../../types/album';
 import {
   StyledSwiperContainer,
   AlbumCard,
   AlbumImage,
   UpdateBadge,
   GradientBackground
-} from '../styles/AlbumSwiper.styles';
+} from '../../styles/AlbumSwiper.styles';
 
 // Import Swiper styles
 import 'swiper/css';
 
 // Import PNG files
-import newjeans from '../assets/images/newjeans.png';
-import aespa from '../assets/images/aespa.png';
-import ive from '../assets/images/ive.png';
-import lesserafim from '../assets/images/lesserafim.png';
-import seventeen from '../assets/images/seventeen.png';
+import newjeans from '../../assets/images/newjeans.png';
+import aespa from '../../assets/images/aespa.png';
+import ive from '../../assets/images/ive.png';
+import lesserafim from '../../assets/images/lesserafim.png';
+import seventeen from '../../assets/images/seventeen.png';
 
 // Album data using project PNG files
 const albumData: Album[] = [
@@ -137,4 +137,4 @@ const AlbumSwiper = ({
   );
 };
 
-export default AlbumSwiper;
+export default AlbumSwiper; 
