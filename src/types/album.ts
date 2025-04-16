@@ -17,7 +17,7 @@ export interface Album {
   id: number;
   artist: Artist;
   count: number;
-  coverImage?: string;
+  coverImage?: string | { default: string };
   isUpdate: boolean;
   published_album_list: PublishedAlbum[];
   released_at: string;

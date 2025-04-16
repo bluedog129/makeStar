@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { Album } from "../../types/album";
 import { formatDate } from "../../utils/date";
+import { getImageSource } from "../../utils/image";
 import smkebabIcon from "../../assets/images/smKebab.png";
 import SelectForm from "./SelectForm";
 import { getDownloadInfo } from "../../api/album";
@@ -325,7 +326,7 @@ const AlbumItem = ({ album }: AlbumItemProps) => {
   return (
     <AlbumItemContainer>
       <AlbumImage $isInactive={!isInLocalStorage()}>
-        <img src={coverImage} alt={album.title} />
+        <img src={getImageSource(coverImage)} alt={album.title} />
       </AlbumImage>
       <AlbumInfo $isInactive={!isInLocalStorage()}>
         <TitleContainer>
