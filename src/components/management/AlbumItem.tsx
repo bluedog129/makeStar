@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { formatDate } from "@/utils/date";
 import { getImageSource } from "@/utils/image";
-import smkebabIcon from "@/assets/images/smKebab.png";
+import smkebabIcon from "@/assets/images/smkebab.png";
 import SelectForm from "@/components/management/SelectForm";
 import { getDownloadInfo } from "@/api/album";
 import DownloadProgress from "@/components/management/DownloadProgress";
